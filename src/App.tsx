@@ -1,23 +1,13 @@
-import { useEffect, useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import LobbyPage from "./pages/LobbyPage";
+import TablePage from "./pages/TablePage";
 
 function App() {
-    const [status, setStatus] = useState("Loading...");
-
-    useEffect(() => {
-        fetch("http://localhost:8080/status")
-          .then(res => res.text())
-          .then(setStatus)
-          .catch(() => setStatus("Backend not reachable"));
-    }, []);
-
     return (
-        <div style={{padding: "20px"}}>
-            <h1>Poker. React test</h1>
-
-            <button onClick={() => {
-                console.log(Math.random());
-            }}>Join table</button>
-        </div>
+        <Routes>
+            <Route path="/" element={<LobbyPage/>}/>
+            <Route path="/table/:tableId" element={<TablePage/>}/>
+        </Routes>
     );
 }
 
