@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { fetchTables } from "../api/PokerApi.ts";
+import { fetchTables } from "../api/pokerApi.ts";
 import type { Table } from "../model/Table";
 
 export default function Lobby() {
