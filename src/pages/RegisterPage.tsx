@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { register } from "../api/authApi";
+import { saveToken } from "../auth/token";
 
 export default function RegisterPage() {
 	const [email, setEmail] = useState("");
@@ -8,15 +9,15 @@ export default function RegisterPage() {
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 
-	const navigate = useNavigate();
+	const redirectToLobby = useNavigate();
 
   	async function handleRegister(e: React.FormEvent) {
     	e.preventDefault();
 
 	    try {
 	      	const token = await register(email, nickname, password);
-	      	localStorage.setItem("jwt_token", token);
-	      	navigate("/lobby");
+	      	saveToken(token);
+	      	redirectToLobby("/lobby");
 	    } catch {
 	      	setError("Registration failed");
 	    }
@@ -29,13 +30,18 @@ export default function RegisterPage() {
       		{error && <p style={{ color: "red" }}>{error}</p>}
 
       		<input placeholder="Email" value={email} onChange={e => setEmail(e.target.value)}/>
-
+      		<br/>
+      		<br/>
       		<input placeholder="Nickname" value={nickname} onChange={e => setNickname(e.target.value)}/>
-
+      		<br/>
+      		<br/>
       		<input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)}/>
-
+      		<br/>
+      		<br/>
       		<button type="submit">Register</button>
+      		<br/>
+      		<br/>
+      		<Link to={`/`}>To Welcome Page</Link>
     	</form>
     );
-    // return <h2>Register</h2>;
 }

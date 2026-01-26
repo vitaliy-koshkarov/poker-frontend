@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchTables } from "../api/pokerApi.ts";
+import { logout } from "../api/authApi.ts";
 import type { Table } from "../model/Table";
 
 export default function Lobby() {
@@ -26,12 +27,15 @@ export default function Lobby() {
             <ul>
                 {tables.map(table => (
                     <li key={table.id}>
-                        Table #{table.id} - {table.players}/{table.maxPlayers}
+                        Table #{table.id}. Players: {table.players}/{table.maxPlayers}
                         {" "}
                         <Link to={`/table/${table.id}`}>Join</Link>
                     </li>
                 ))}
             </ul>
+            <br/>
+            <br/>
+            <button type="button" onClick={logout}>Logout</button>
         </div>
 	);
 }
