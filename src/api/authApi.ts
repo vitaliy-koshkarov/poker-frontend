@@ -1,6 +1,5 @@
 import { authFetch } from "./authFetch";
-import { getToken, clearToken } from "../auth/token";
-import { useNavigate } from "react-router-dom";
+import { clearToken } from "../auth/token";
 
 const API_URL = "http://localhost:8080/api/auth";
 
@@ -38,9 +37,6 @@ export async function login(email: string, password: string): Promise<string> {
 }
 
 export async function logout() {
-	// const token = getToken();
-	// console.log("JWT: " + token);
-
 	const response = await authFetch(`${API_URL}/logout`, {
 		method: "POST"
 	});

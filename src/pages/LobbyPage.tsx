@@ -36,6 +36,9 @@ export default function Lobby() {
             <br/>
             <br/>
             <button type="button" onClick={logout}>Logout</button>
+            <br/>
+            <br/>
+            <Link to="/profile">Profile</Link>
         </div>
 	);
 }
