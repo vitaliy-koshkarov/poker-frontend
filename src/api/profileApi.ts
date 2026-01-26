@@ -21,11 +21,16 @@ export async function updateProfileInfo(email: string, nickname: string) {
 	if (!response.ok) {
 		throw new Error("Error update profile info");
 	}
-
-	const responseData = await response.json();
-	return responseData;
 }
 
-export async function updatePassword() {
+export async function updatePassword(oldPassword: string, newPassword: string) {
+	const response = await authFetch(`${URL}/updatePassword`, {
+		method: "POST",
+		body: JSON.stringify({oldPassword, newPassword})
+	});
 
+	if (!response.ok) {
+		console.log("Response: " + response.body);
+		throw new Error("Error update password");
+	}
 }
