@@ -9,7 +9,7 @@ export default function RegisterPage() {
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 
-	const redirectToLobby = useNavigate();
+	const navigateTo = useNavigate();
 
   	async function handleRegister(e: React.FormEvent) {
     	e.preventDefault();
@@ -17,7 +17,7 @@ export default function RegisterPage() {
 	    try {
 	      	const token = await register(email, nickname, password);
 	      	saveToken(token);
-	      	redirectToLobby("/lobby");
+	      	navigateTo("/profile");
 	    } catch {
 	      	setError("Registration failed");
 	    }

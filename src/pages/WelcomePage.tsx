@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 
 export default function WelcomePage() {
-	let navigate = useNavigate(); 
+	let navigateTo = useNavigate();
   	
   	const redirectToRegisterPage = () => { 
-    	navigate("/register");
+    	navigateTo("/register");
     }
 
     const redirectToLoginPage = () => { 
-    	navigate("/login");
+    	navigateTo("/login");
     }
 
 	return(

@@ -6,19 +6,13 @@ import type { Table } from "../model/Table";
 
 export default function Lobby() {
     const [tables, setTables] = useState<Table[]>([]);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         fetchTables()
-            .then(setTables)
-            .catch(err => setError(err.message))
-            .finally(() => setLoading(false));
+        .then(setTables)
+        .catch(err => setError(err.message));
     }, []);
-
-    if (loading) return <p>Loading tables...</p>;
-
-    if (error) return <p>Error: {error}</p>;
 
 	return (
 		<div style={{ padding: "20px" }}>

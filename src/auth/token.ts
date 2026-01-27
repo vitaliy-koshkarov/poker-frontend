@@ -2,7 +2,6 @@ const TOKEN_KEY = "jwt_token";
 
 export function saveToken(token: string) {
 	localStorage.setItem(TOKEN_KEY, token);
-	// console.log("JWT saved: " + token);
 }
 
 export function getToken(): string | null {

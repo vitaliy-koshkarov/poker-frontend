@@ -8,7 +8,7 @@ export default function LoginPage() {
 	const [password, setPassword] = useState("");
 	const [error, setError] = useState("");
 
-	const redirectToLobby = useNavigate();
+	const navigateTo = useNavigate();
 
 	async function handleLogin(e: React.FormEvent) {
 		e.preventDefault();
@@ -17,7 +17,7 @@ export default function LoginPage() {
 			const token = await login(email, password);
 			saveToken(token);
 			console.log("Successful login");
-			redirectToLobby("/lobby");
+			navigateTo("/profile");
 		} catch(e) {
 			setError("Invalid email or password");
 		}

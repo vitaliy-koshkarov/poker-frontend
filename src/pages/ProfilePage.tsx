@@ -10,29 +10,27 @@ export default function ProfilePage() {
 	const [newPassword, setNewPassword] = useState("");
 	const [profileInfoMessage, setProfileInfoMessage] = useState("");
 	const [passwordMessage, setPasswordMessage] = useState("");
+	const [error, setError] = useState("");
 
 	useEffect(() => {
-    	getProfileInfo()
-    		.then(data => {
-    			setEmail(data.email);
-    			setNickname(data.nickname);
-    		});
+        getProfileInfo()
+    	.then(data => {
+            setEmail(data.email);
+            setNickname(data.nickname);
+        })
+        .catch(error => setError(error.message));
   	}, []);
 
 	async function updProfileInfo(e: React.FormEvent) {
     	e.preventDefault();
-		updateProfileInfo(email, nickname);
+		await updateProfileInfo(email, nickname);
 		setProfileInfoMessage("Profile updated");
     }
 
     async function updPass(e: React.FormEvent) {
     	e.preventDefault();
 
-    	console.log("Click updatePassword");
-    	console.log("old pass: " + oldPassword);
-    	console.log("new pass: " + newPassword);
-
-    	updatePassword(oldPassword, newPassword);
+    	await updatePassword(oldPassword, newPassword);
 
     	setOldPassword("");
     	setNewPassword("");
@@ -42,6 +40,7 @@ export default function ProfilePage() {
 	return (
 		<div>
 			<h2>Profile Page</h2>
+			{error && <p style={{ color: "red" }}>{error}</p>}
 
 			<Link to="/lobby">To lobby</Link>
 			<br/>
