@@ -1,0 +1,26 @@
+.lobbyPage {
+	padding: 10px 0px 0px 10px;
+}
+
+.logoutBtn {
+	margin: 20px 0px 0px 0px;
+}
+
+.divTable {
+	padding : 30px 0px 0px 0px;
+}
+
+.table {
+	border: 1px solid black;
+}
+
+.td {
+	border: 1px solid black;
+	width: 160px;
+	text-align: center;
+	word-break: break-all;
+}
+
+.tr {
+	height: 42px;
+}

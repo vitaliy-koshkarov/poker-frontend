@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import WelcomePage from "./pages/WelcomePage";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
-import LobbyPage from "./pages/LobbyPage";
+import LobbyPage from "./pages/lobby/LobbyPage";
 import ProfilePage from "./pages/ProfilePage";
 import CreateGamePage from "./pages/table/CreateGamePage";
 
