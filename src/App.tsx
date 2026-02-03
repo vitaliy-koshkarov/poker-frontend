@@ -4,6 +4,7 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import LobbyPage from "./pages/LobbyPage";
 import ProfilePage from "./pages/ProfilePage";
+import CreateGamePage from "./pages/table/CreateGamePage";
 
 export default function App() {
     return (
@@ -13,6 +14,7 @@ export default function App() {
             <Route path="/login" element={<LoginPage/>}/>
             <Route path="/profile" element={<ProfilePage/>}/>
             <Route path="/lobby" element={<LobbyPage/>}/>
+            <Route path="/createGame" element={<CreateGamePage/>}/>
         </Routes>
     );
 }
