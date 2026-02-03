@@ -1,12 +1,19 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { createGame } from "../../api/tables/tablesApi";
 import mainCss from "../Main.module.css";
-import createGameCss from "./CreateTable.module.css";
+import createGameCss from "./CreateGame.module.css";
 
 export default function CreateGamePage() {
 	const [name, setName] = useState("");
 	const [maxPlayers, setMaxPlayers] = useState(2);
 	const [buyIn, setBuyIn] = useState(50);
+
+    const navigateTo = useNavigate();
+
+    function returnBack() {
+        navigateTo("/lobby");
+    }
 
 	return (
 		<div className={mainCss.page}>
@@ -44,6 +51,10 @@ export default function CreateGamePage() {
 			<div className={createGameCss.createGameBtn}>
 				<button type="button" onClick={() => createGame(maxPlayers, buyIn, name) }>Create game</button>
 			</div>
+
+			<div className={createGameCss.backBtn}>
+                <button type="button" onClick={returnBack}>Back</button>
+            </div>
 		</div>
 	);
 }
