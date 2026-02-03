@@ -24,3 +24,15 @@ export async function createGame(maxPlayers: int, buyIn: int, name: string) {
 
 	window.location.replace("/lobby");
 }
+
+export async function deleteTable(id: bigint) {
+	const deleteResponse = await authFetch(`${BASE_URL}/delete/${id}`, {
+		method: "DELETE"
+	})
+
+	if (!deleteResponse.ok) {
+        throw new Error("Failed to remove table with id " + id);
+    }
+
+    window.location.replace("/lobby");
+}

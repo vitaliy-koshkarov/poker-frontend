@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchTables } from "../../api/tables/tablesApi.ts";
+import { fetchTables, deleteTable } from "../../api/tables/tablesApi.ts";
 import { logout } from "../../api/authApi.ts";
 import type { Table } from "../../model/Table";
 import styles from "./Table.module.css";
@@ -47,6 +47,7 @@ export default function Lobby() {
                                 <td className={styles.td}>Players</td>
                                 <td className={styles.td}>Buy-in</td>
                                 <td className={styles.td}>Join</td>
+                                <td className={styles.td}>Remove game</td>
                             </tr>
                         </thead>
 
@@ -59,6 +60,9 @@ export default function Lobby() {
                                     <td className={styles.td}>{table.buyIn}</td>
                                     <td className={styles.td}>
                                         <Link to={`/table/${table.id}`}>Join</Link>
+                                    </td>
+                                    <td className={styles.td}>
+                                        <button type="button" onClick={() => deleteTable(table.id)}>Delete</button>
                                     </td>
                                 </tr>
                             ))}

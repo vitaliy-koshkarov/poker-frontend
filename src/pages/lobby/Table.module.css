@@ -14,13 +14,13 @@
 	border: 1px solid black;
 }
 
+.tr {
+	height: 42px;
+}
+
 .td {
 	border: 1px solid black;
 	width: 160px;
 	text-align: center;
 	word-break: break-all;
-}
-
-.tr {
-	height: 42px;
 }
