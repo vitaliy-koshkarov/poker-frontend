@@ -1,0 +1,16 @@
+.page {
+    padding: 20px 20px 20px 20px;
+}
+
+.errorMessage {
+    color: red;
+}
+
+.successMessage {
+    color: green;
+}
+
+.title {
+    font-size: large;
+    font-weight: bold;
+}

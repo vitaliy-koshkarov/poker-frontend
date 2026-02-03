@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
+import LoginPage from "../login/LoginPage";
+import mainCss from "../Main.module.css";
 
 export default function WelcomePage() {
 	let navigateTo = useNavigate();
 
-  	const redirectToRegisterPage = () => { 
-    	navigateTo("/register");
+  	const redirectToRegistrationPage = () => {
+    	navigateTo("/registration");
     }
 
     const redirectToLoginPage = () => { 
@@ -12,7 +14,7 @@ export default function WelcomePage() {
     }
 
 	return(
-		<div style={{ padding: "20px" }}>
+		<div className={mainCss.page}>
 			Welcome to Poker
 			<br/>
 			<br/>
@@ -20,7 +22,7 @@ export default function WelcomePage() {
 			<button onClick={redirectToLoginPage}>Login</button>
 			<br/>
 			<br/>
-			<button onClick={redirectToRegisterPage}>Register</button>
+			<button onClick={redirectToRegistrationPage}>Registration</button>
 		</div>
 	);
 }

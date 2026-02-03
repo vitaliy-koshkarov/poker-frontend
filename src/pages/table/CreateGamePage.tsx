@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { createGame } from "../../api/tables/tablesApi";
+import mainCss from "../Main.module.css";
+import createGameCss from "./CreateTable.module.css";
 
 export default function CreateGamePage() {
 	const [name, setName] = useState("");
@@ -7,15 +9,17 @@ export default function CreateGamePage() {
 	const [buyIn, setBuyIn] = useState(50);
 
 	return (
-		<div style={{"padding" : "0px 0px 0px 20px"}}>
-			<h3>Choose parameters of the game</h3>
+		<div className={mainCss.page}>
+			<div className={mainCss.title}>
+			    <label>Choose parameters of the game</label>
+			</div>
 
-			<div>
+			<div className={createGameCss.gameNameInput}>
 				<label>Name: </label>
 				<input placeholder="Enter game name" value={name} onChange={e => setName(e.target.value)}/>
 			</div>
 
-			<div style={{"padding" : "20px 0px 0px 0px"}}>
+			<div className={createGameCss.maxPlayersInput}>
 				<label>Max players: </label>
 				<select value={maxPlayers} onChange={e => setMaxPlayers(e.target.value)}>
 					<option value="2">2</option>
@@ -26,7 +30,7 @@ export default function CreateGamePage() {
 				</select>
 			</div>
 
-			<div style={{"padding" : "20px 0px 0px 0px"}}>
+			<div className={createGameCss.divBuyIn}>
 				<label>Buy-in: </label>
 				<select value={buyIn} onChange={e => setBuyIn(e.target.value)}>
 					<option value="50">50</option>
@@ -36,7 +40,8 @@ export default function CreateGamePage() {
 					<option value="1000">1 000</option>
 				</select>
 			</div>
-			<div style={{"padding" : "30px 0px 0px 0px"}}>
+
+			<div className={createGameCss.createGameBtn}>
 				<button type="button" onClick={() => createGame(maxPlayers, buyIn, name) }>Create game</button>
 			</div>
 		</div>

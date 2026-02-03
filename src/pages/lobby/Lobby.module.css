@@ -1,13 +1,13 @@
-.lobbyPage {
-	padding: 10px 0px 0px 10px;
+.logoutBtn {
+	margin: 20px 0px 20px 0px;
 }
 
-.logoutBtn {
-	margin: 20px 0px 0px 0px;
+.createGameBtn {
+    margin: 20px 0px 0px 0px;
 }
 
 .divTable {
-	padding : 30px 0px 0px 0px;
+	padding : 20px 0px 0px 0px;
 }
 
 .table {
