@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { fetchTables, deleteTable } from "../../api/tables/tablesApi.ts";
+import { fetchGames, deleteGame } from "../../api/games/gamesApi.ts";
 import { logout } from "../../api/authApi.ts";
 import type { Table } from "../../model/Table";
 import mainCss from "../Main.module.css";
 import lobbyCss from "./Lobby.module.css";
 
 export default function Lobby() {
-    const [tables, setTables] = useState<Table[]>([]);
+    const [games, setGames] = useState<Table[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        fetchTables()
-        .then(setTables)
+        fetchGames()
+        .then(setGames)
         .catch(err => setError(err.message));
     }, []);
 
     const navigateTo = useNavigate();
 
-    const redirectToCreateTablePage = () => {
+    const redirectToCreateGamePage = () => {
         navigateTo("/createGame");
     }
 
@@ -36,7 +36,7 @@ export default function Lobby() {
                 <div className={mainCss.title}>Lobby</div>
 
                 <div className={lobbyCss.createGameBtn}>
-                    <button type="button" onClick={redirectToCreateTablePage}>Create game</button>
+                    <button type="button" onClick={redirectToCreateGamePage}>Create game</button>
                 </div>
 
                 <div className={lobbyCss.divTable}>
@@ -53,17 +53,17 @@ export default function Lobby() {
                         </thead>
 
                         <tbody>
-                            {tables.map(table => (
-                                <tr key={table.id} className={lobbyCss.tr}>
-                                    <td className={lobbyCss.td}>{table.id}</td>
-                                    <td className={lobbyCss.td}>{table.name}</td>
-                                    <td className={lobbyCss.td}>{table.currentPlayers}/{table.maxPlayers}</td>
-                                    <td className={lobbyCss.td}>{table.buyIn}</td>
+                            {games.map(game => (
+                                <tr key={game.id} className={lobbyCss.tr}>
+                                    <td className={lobbyCss.td}>{game.id}</td>
+                                    <td className={lobbyCss.td}>{game.name}</td>
+                                    <td className={lobbyCss.td}>{game.currentPlayers}/{game.maxPlayers}</td>
+                                    <td className={lobbyCss.td}>{game.buyIn}</td>
                                     <td className={lobbyCss.td}>
-                                        <Link to={`/table/${table.id}`}>Join</Link>
+                                        <Link to={`/game/${game.id}`}>Join</Link>
                                     </td>
                                     <td className={lobbyCss.td}>
-                                        <button type="button" onClick={() => deleteTable(table.id)}>Delete</button>
+                                        <button type="button" onClick={() => deleteGame(game.id)}>Delete</button>
                                     </td>
                                 </tr>
                             ))}
