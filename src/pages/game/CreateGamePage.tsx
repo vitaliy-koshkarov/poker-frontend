@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createGame } from "../../api/tables/tablesApi";
+import { createGame } from "../../api/games/gamesApi";
 import mainCss from "../Main.module.css";
 import createGameCss from "./CreateGame.module.css";
 

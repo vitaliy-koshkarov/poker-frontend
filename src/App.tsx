@@ -4,7 +4,7 @@ import RegistrationPage from "./pages/registration/RegistrationPage";
 import LoginPage from "./pages/login/LoginPage";
 import LobbyPage from "./pages/lobby/LobbyPage";
 import ProfilePage from "./pages/profile/ProfilePage";
-import CreateGamePage from "./pages/table/CreateGamePage";
+import CreateGamePage from "./pages/game/CreateGamePage";
 
 export default function App() {
     return (
