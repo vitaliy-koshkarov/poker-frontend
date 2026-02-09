@@ -1,6 +1,8 @@
 import { authFetch } from "../authFetch";
+import type { GameTable } from "../../model/GameTable";
 
 const BASE_URL = "http://localhost:8080/api/games";
+const GAME_TABLE_URL = "http://localhost:8080/api/game";
 
 export async function fetchGames() {
     const gamesResponse = await authFetch(`${BASE_URL}`);
@@ -35,4 +37,23 @@ export async function deleteGame(id: bigint) {
     }
 
     window.location.replace("/lobby");
+}
+
+export async function joinGame(gameTable: GameTable) {
+    console.log("Game table id: " + JSON.stringify(gameTable));
+
+    window.location.replace(`/game/${gameTable.id}`);
+}
+
+export async function fetchGamesById(id: bigint) {
+    console.log("fetchGamesById: " + id);
+    const gameTableResponse = await authFetch(`${GAME_TABLE_URL}/${id}`, {
+        method: "GET"
+    });
+
+    if (!gameTableResponse.ok) {
+        throw new Error("Failed to fetch game with id " + id);
+    }
+
+    return gameTableResponse.json();
 }
