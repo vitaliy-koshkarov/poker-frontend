@@ -1,9 +1,9 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {Routes, Route} from "react-router-dom";
 import WelcomePage from "./pages/welcome/WelcomePage";
 import RegistrationPage from "./pages/registration/RegistrationPage";
 import LoginPage from "./pages/login/LoginPage";
-import LobbyPage from "./pages/lobby/LobbyPage";
 import ProfilePage from "./pages/profile/ProfilePage";
+import LobbyPage from "./pages/lobby/LobbyPage";
 import CreateGamePage from "./pages/game/CreateGamePage";
 import GameTablePage from "./pages/game/GameTablePage";
 

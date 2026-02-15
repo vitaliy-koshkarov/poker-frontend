@@ -1,7 +1,7 @@
-interface GameTable {
-    id: number;
+export interface GameTable {
+    id: bigint;
     currentPlayers: number;
     maxPlayers: number;
-    butIn: number;
+    buyIn: number;
     name: string;
 }

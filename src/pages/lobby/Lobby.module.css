@@ -1,17 +1,21 @@
 .logoutBtn {
-	margin: 20px 0px 20px 0px;
+	margin: 20px 0 20px 0;
 }
 
 .createGameBtn {
-    margin: 20px 0px 0px 0px;
+    margin: 20px 0 20px 0;
 }
 
 .divTable {
-	padding : 20px 0px 0px 0px;
+	margin : 20px 0 20px 0;
 }
 
 .table {
 	border: 1px solid black;
+}
+
+.thead {
+	color: #036ffe;
 }
 
 .tr {
@@ -23,4 +27,14 @@
 	width: 160px;
 	text-align: center;
 	word-break: break-all;
+}
+
+.joinGameBtn {
+	border-radius: 12px;
+	color: #b825fc;
+}
+
+.deleteBtn {
+	border-radius: 12px;
+	color: #b60404;
 }

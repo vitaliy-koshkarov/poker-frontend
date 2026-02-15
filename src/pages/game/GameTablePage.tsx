@@ -1,13 +1,13 @@
-import { useParams, Link } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
+import {useParams, Link} from "react-router-dom";
+import {useEffect, useRef, useState} from "react";
 import mainCss from "../Main.module.css";
 import gameTableCss from "./GameTable.module.css";
+import type {GameTable} from "../../model/GameTable.ts";
 
 export default function GameTablePage() {
     const socketRef = useRef<WebSocket | null>(null);
-    const { id } = useParams();
-    const [gameTable, setGameTable] = useState();
-    const [error, setError] = useState<string | null>(null);
+    const {id} = useParams();
+    const [gameTable, setGameTable] = useState<GameTable | null>(null);
 
     useEffect(() => {
         console.log("Try to ws connect with table id " + id);
@@ -18,14 +18,18 @@ export default function GameTablePage() {
             socket.send(JSON.stringify({gameTableId: id}));
         };
 
-        socket.onmessage = (event) => {
-            const gameTableData = JSON.parse(event.data);
+        socket.onmessage = (messageEvent) => {
+            const gameTableData = JSON.parse(messageEvent.data);
             console.log("Received:", gameTableData);
             setGameTable(gameTableData);
         };
 
         socket.onclose = () => {
             console.log("WebSocket disconnected");
+        };
+
+        socket.onerror = errorEvent => {
+            console.error("Error: " + errorEvent);
         };
 
         socketRef.current = socket;
@@ -38,13 +42,16 @@ export default function GameTablePage() {
     return (
         <div className={mainCss.page}>
             <div className={mainCss.title}>Game table</div>
-            {error && <p className={mainCss.errorMessage}>{error}</p>}
 
             <div className={gameTableCss.link}>
                 <Link to="/lobby">Back to lobby</Link>
             </div>
 
-            <div style={{"padding" : "20px 0px 20px 0px"}}>Page id: {id}</div>
+            <div style={{"padding": "20px 0px 20px 0px"}}>Page id: {id}</div>
+            <div>
+                <input placeholder="Game name"/>
+                <button type="button">Change game name</button>
+            </div>
 
             <div className={gameTableCss.gameTableInfo}>
                 <div className={gameTableCss.gameTableTitle}>Game Table</div>
