@@ -1,43 +1,65 @@
 import {useParams, Link} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
+import {Client} from "@stomp/stompjs";
 import mainCss from "../Main.module.css";
 import gameTableCss from "./GameTable.module.css";
 import type {GameTable} from "../../model/GameTable.ts";
 
 export default function GameTablePage() {
-    const socketRef = useRef<WebSocket | null>(null);
+    const stompClientRef = useRef<Client | null>(null);
+    const brokerURL = "ws://localhost:8080/ws/game";
+    const brokerName = "gameTable";
+    const appDestinationPrefix = "kv-poker-game";
     const {id} = useParams();
     const [gameTable, setGameTable] = useState<GameTable | null>(null);
+    const [newGameName, setNewGameName] = useState("");
 
     useEffect(() => {
-        console.log("Try to ws connect with table id " + id);
-        const socket = new WebSocket("ws://localhost:8080/ws/game");
 
-        socket.onopen = () => {
-            console.log("WebSocket connected");
-            socket.send(JSON.stringify({gameTableId: id}));
-        };
+        const stompClient = new Client({
+            brokerURL: `${brokerURL}`,
+            onConnect: (connectFrame) => {
+                console.log("Connected " + connectFrame);
 
-        socket.onmessage = (messageEvent) => {
-            const gameTableData = JSON.parse(messageEvent.data);
-            console.log("Received:", gameTableData);
-            setGameTable(gameTableData);
-        };
+                stompClient.subscribe(`/${brokerName}/${id}`, message => {
+                    console.log("Received message: " + message)
+                    console.log("Message: " + message.body)
+                    const gameTableData: GameTable = JSON.parse(message.body);
+                    console.log("Received:", gameTableData);
+                    setGameTable(gameTableData);
+                });
 
-        socket.onclose = () => {
-            console.log("WebSocket disconnected");
-        };
+                stompClient.publish({
+                    destination: `/${appDestinationPrefix}/${id}`,
+                    body: id
+                });
+            },
 
-        socket.onerror = errorEvent => {
-            console.error("Error: " + errorEvent);
-        };
+            onDisconnect: (disconnectFrame) => {
+                console.log("Disconnected " + disconnectFrame);
+            },
 
-        socketRef.current = socket;
+            onStompError: (errorFrame) => {
+                console.error("Error: " + errorFrame);
+            }
+        });
+
+        stompClient.activate();
+
+        stompClientRef.current = stompClient;
 
         return () => {
-            socket.close();
+            stompClient.deactivate();
         };
     }, [id]);
+
+    function handleClick() {
+        console.log("new game name: " + newGameName);
+        stompClientRef.current?.publish({
+            destination: `/${appDestinationPrefix}/${id}`,
+            body: newGameName
+        });
+    }
 
     return (
         <div className={mainCss.page}>
@@ -49,8 +71,9 @@ export default function GameTablePage() {
 
             <div style={{"padding": "20px 0px 20px 0px"}}>Page id: {id}</div>
             <div>
-                <input placeholder="Game name"/>
-                <button type="button">Change game name</button>
+                <input placeholder="Game name" value={newGameName}
+                       onChange={e => setNewGameName(e.target.value)}/>
+                <button type="button" onClick={handleClick}>Change game name</button>
             </div>
 
             <div className={gameTableCss.gameTableInfo}>
