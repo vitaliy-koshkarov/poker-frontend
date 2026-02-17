@@ -40,6 +40,6 @@ export async function deleteGame(id: bigint) {
 
 export async function joinGame(gameTable: GameTable) {
     console.log("Game table id: " + JSON.stringify(gameTable));
-
+    // TODO: find better way for redirection
     window.location.replace(`/game/${gameTable.id}`);
 }

@@ -8,8 +8,10 @@ import type {GameTable} from "../../model/GameTable.ts";
 export default function GameTablePage() {
     const stompClientRef = useRef<Client | null>(null);
     const brokerURL = "ws://localhost:8080/ws/game";
-    const brokerName = "gameTable";
+    const brokerDestinationPrefix = "topic";
+    const currentDestination = "gameTable"; // TODO: rename to something more appropriate
     const appDestinationPrefix = "kv-poker-game";
+    const publishMessageName = "table"; // TODO: rename to something more appropriate
     const {id} = useParams();
     const [gameTable, setGameTable] = useState<GameTable | null>(null);
     const [newGameName, setNewGameName] = useState("");
@@ -21,26 +23,47 @@ export default function GameTablePage() {
             onConnect: (connectFrame) => {
                 console.log("Connected " + connectFrame);
 
-                stompClient.subscribe(`/${brokerName}/${id}`, message => {
-                    console.log("Received message: " + message)
-                    console.log("Message: " + message.body)
-                    const gameTableData: GameTable = JSON.parse(message.body);
-                    console.log("Received:", gameTableData);
-                    setGameTable(gameTableData);
-                });
+                stompClient.subscribe(
+                    `/${appDestinationPrefix}/${currentDestination}/${id}`,
+                    subscribeMessageCallback => {
+                        // receive init data after subscription
+                        console.log("Subscribe message: " + subscribeMessageCallback);
+                        console.log("Subscribe message body: " + subscribeMessageCallback.body);
+                        const initData: GameTable = JSON.parse(subscribeMessageCallback.body);
+                        setGameTable(initData);
+                    }
+                );
 
-                stompClient.publish({
-                    destination: `/${appDestinationPrefix}/${id}`,
-                    body: id
-                });
+                stompClient.subscribe(
+                    `/${brokerDestinationPrefix}/${currentDestination}/${id}`,
+                    messageCallback => {
+                        // receive game table data after Send (some action from player)
+                        console.log("Received message: " + messageCallback);
+                        console.log("Message body: " + messageCallback.body);
+                        const gameTableData: GameTable = JSON.parse(messageCallback.body).payload;
+                        setGameTable(gameTableData);
+                    }
+                );
             },
 
             onDisconnect: (disconnectFrame) => {
-                console.log("Disconnected " + disconnectFrame);
+                console.log("Client disconnected: " + disconnectFrame);
             },
 
             onStompError: (errorFrame) => {
-                console.error("Error: " + errorFrame);
+                console.error("STOMP error: " + errorFrame);
+            },
+
+            onUnhandledFrame: (unhandledFrame) => {
+                console.log("Unhandled frame: " + unhandledFrame);
+            },
+
+            onUnhandledMessage: (unhandledMessage) => {
+                console.log("Unhandled message: ", unhandledMessage);
+            },
+
+            onUnhandledReceipt: (unhandledReceipt) => {
+                console.log("Unhandled receipt: ", unhandledReceipt);
             }
         });
 
@@ -56,9 +79,10 @@ export default function GameTablePage() {
     function handleClick() {
         console.log("new game name: " + newGameName);
         stompClientRef.current?.publish({
-            destination: `/${appDestinationPrefix}/${id}`,
-            body: newGameName
+            destination: `/${appDestinationPrefix}/${publishMessageName}/${id}`,
+            body: newGameName // TODO: null check
         });
+        setNewGameName("");
     }
 
     return (
@@ -78,7 +102,7 @@ export default function GameTablePage() {
 
             <div className={gameTableCss.gameTableInfo}>
                 <div className={gameTableCss.gameTableTitle}>Game Table</div>
-                <p>Table ID: {id}</p>
+                {gameTable && <p>Table ID: {gameTable.id}</p>}
                 {gameTable && <p>Table name: {gameTable.name}</p>}
                 {gameTable && <p>Table current players: {gameTable.currentPlayers}</p>}
                 {gameTable && <p>Table max players: {gameTable.maxPlayers}</p>}
