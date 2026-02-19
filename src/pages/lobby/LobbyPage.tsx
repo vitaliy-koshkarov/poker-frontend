@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import {useNavigate, Link} from "react-router-dom";
-import {fetchGames, joinGame, deleteGame} from "../../api/games/gamesApi.ts";
+import {fetchGames, /*joinGame,*/ deleteGame} from "../../api/games/gamesApi.ts";
 import {logout} from "../../api/authApi.ts";
 import mainCss from "../Main.module.css";
 import lobbyCss from "./Lobby.module.css";
@@ -20,6 +20,10 @@ export default function LobbyPage() {
 
     const redirectToCreateGamePage = () => {
         navigateTo("/createGame");
+    }
+
+    const navigateToGameTable = (gameTableId: bigint) => {
+        navigateTo(`/game/${gameTableId}`)
     }
 
     return (
@@ -62,7 +66,8 @@ export default function LobbyPage() {
                                 <td className={lobbyCss.td}>{gameTable.buyIn}</td>
                                 <td className={lobbyCss.td}>
                                     <button className={lobbyCss.joinGameBtn} type="button"
-                                            onClick={() => joinGame(gameTable)}>
+                                        /*onClick={() => joinGame(gameTable)}>*/
+                                            onClick={() => navigateToGameTable(gameTable.id)}>
                                         Join game
                                     </button>
                                 </td>

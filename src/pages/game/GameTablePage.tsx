@@ -1,9 +1,10 @@
 import {useParams, Link} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import {Client} from "@stomp/stompjs";
+import {getToken} from "../../auth/token.ts";
+import type {GameTable} from "../../model/GameTable.ts";
 import mainCss from "../Main.module.css";
 import gameTableCss from "./GameTable.module.css";
-import type {GameTable} from "../../model/GameTable.ts";
 
 export default function GameTablePage() {
     const stompClientRef = useRef<Client | null>(null);
@@ -17,9 +18,20 @@ export default function GameTablePage() {
     const [newGameName, setNewGameName] = useState("");
 
     useEffect(() => {
-
+        /* TODO: implement WebSocket connection on App level. For example:
+            <App>
+              <WebSocketProvider>
+                <Router>
+                  <Lobby/>
+                  <Game/>
+                </Router>
+              </WebSocketProvider>
+            </App>*/
         const stompClient = new Client({
             brokerURL: `${brokerURL}`,
+            connectHeaders: {
+                Authorization: "Bearer " + getToken()
+            },
             onConnect: (connectFrame) => {
                 console.log("Connected " + connectFrame);
 
