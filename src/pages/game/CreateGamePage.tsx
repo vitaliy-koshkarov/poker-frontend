@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {createGame} from "../../api/games/gamesApi";
+import {createGameRequest} from "../../api/games/gamesApi";
 import mainCss from "../Main.module.css";
 import createGameCss from "./CreateGame.module.css";
 
@@ -10,6 +10,11 @@ export default function CreateGamePage() {
     const [buyIn, setBuyIn] = useState(50);
 
     const navigateTo = useNavigate();
+
+    const createGame = (maxPlayers: number, buyIn: number, name: string) => {
+        createGameRequest(maxPlayers, buyIn, name)
+        .then(returnBack);
+    }
 
     function returnBack() {
         navigateTo("/lobby");

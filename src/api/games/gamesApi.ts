@@ -1,5 +1,4 @@
 import {authFetch} from "../authFetch";
-import type {GameTable} from "../../model/GameTable";
 
 const BASE_URL = "http://localhost:8080/api/games";
 
@@ -13,7 +12,7 @@ export async function fetchGames() {
     return gamesResponse.json();
 }
 
-export async function createGame(maxPlayers: number, buyIn: number, name: string) {
+export async function createGameRequest(maxPlayers: number, buyIn: number, name: string) {
     const createGameResponse = await authFetch(`${BASE_URL}/create`, {
         method: "POST",
         body: JSON.stringify({maxPlayers, buyIn, name})
@@ -22,8 +21,6 @@ export async function createGame(maxPlayers: number, buyIn: number, name: string
     if (!createGameResponse.ok) {
         throw new Error("Failed to create game");
     }
-
-    window.location.replace("/lobby");
 }
 
 export async function deleteGame(id: bigint) {
@@ -34,12 +31,6 @@ export async function deleteGame(id: bigint) {
     if (!deleteGameResponse.ok) {
         throw new Error("Failed to remove game with id " + id);
     }
-
+    /*TODO: fix replacing URL and page reload. Just remove item or fetch new items*/
     window.location.replace("/lobby");
-}
-
-export async function joinGame(gameTable: GameTable) {
-    console.log("Game table id: " + JSON.stringify(gameTable));
-    // TODO: find better way for redirection
-    window.location.replace(`/game/${gameTable.id}`);
 }

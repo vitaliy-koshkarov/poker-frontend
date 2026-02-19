@@ -3,13 +3,13 @@ import mainCss from "../Main.module.css";
 import welcomeCss from "./Welcome.module.css";
 
 export default function WelcomePage() {
-    let navigateTo = useNavigate();
+    const navigateTo = useNavigate();
 
-    const redirectToRegistrationPage = () => {
+    const navigateToRegistrationPage = () => {
         navigateTo("/registration");
     }
 
-    const redirectToLoginPage = () => {
+    const navigateToLoginPage = () => {
         navigateTo("/login");
     }
 
@@ -18,11 +18,11 @@ export default function WelcomePage() {
             <div className={welcomeCss.title}>Welcome to Poker</div>
 
             <div className={welcomeCss.loginBtn}>
-                <button onClick={redirectToLoginPage}>Login</button>
+                <button onClick={navigateToLoginPage}>Login</button>
             </div>
 
             <div className={welcomeCss.registrationBtn}>
-                <button onClick={redirectToRegistrationPage}>Registration</button>
+                <button onClick={navigateToRegistrationPage}>Registration</button>
             </div>
         </div>
     );
