@@ -1,19 +1,19 @@
 .gameNameInput {
-    margin: 20px 0px 0px 0px;
+    margin: 20px 0 20px 0;
 }
 
 .maxPlayersInput {
-    margin: 20px 0px 0px 0px;
+    margin: 20px 0 20px 0;
 }
 
 .divBuyIn {
-    margin: 20px 0px 0px 0px;
+    margin: 20px 0 20px 0;
 }
 
 .createGameBtn {
-    margin: 20px 0px 0px 0px;
+    margin: 20px 0 20px 0;
 }
 
 .backBtn {
-    margin: 20px 0px 0px 0px;
+    margin: 30px 0 20px 0;
 }

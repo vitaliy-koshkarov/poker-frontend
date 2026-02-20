@@ -1,27 +1,35 @@
 .link {
-    margin: 20px 0px 0px 0px;
+    margin: 10px 0 20px 0;
 }
 
 .logoutBtn {
-    margin: 20px 0px 0px 0px;
+    margin: 20px 0 20px 0;
 }
 
 .form {
-    margin: 40px 0px 0px 0px;
+    margin: 30px 0 30px 0;
+}
+
+.inputEmail {
+    margin: 20px 0 20px 0;
 }
 
 .inputNickname {
-    margin: 20px 0px 0px 0px;
+    margin: 20px 0 20px 0;
 }
 
 .saveProfileInfoBtn {
-    margin: 20px 0px 0px 0px;
+    margin: 20px 0 20px 0;
 }
 
-.inputPassword {
-    margin: 20px 0px 0px 0px;
+.inputCurrentPassword {
+    margin: 20px 0 20px 0;
+}
+
+.inputNewPassword {
+    margin: 20px 0 20px 0;
 }
 
 .savePasswordBtn {
-    margin: 20px 0px 0px 0px;
+    margin: 20px 0 20px 0;
 }

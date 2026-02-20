@@ -1,4 +1,4 @@
-import { authFetch } from "../authFetch";
+import {authFetch} from "../authFetch";
 
 const BASE_URL = "http://localhost:8080/api/games";
 
@@ -12,27 +12,25 @@ export async function fetchGames() {
     return gamesResponse.json();
 }
 
-export async function createGame(maxPlayers: int, buyIn: int, name: string) {
-	const createGameResponse = await authFetch(`${BASE_URL}/create`, {
-		method: "POST",
-		body: JSON.stringify({maxPlayers, buyIn, name})
-	});
+export async function createGameRequest(maxPlayers: number, buyIn: number, name: string) {
+    const createGameResponse = await authFetch(`${BASE_URL}/create`, {
+        method: "POST",
+        body: JSON.stringify({maxPlayers, buyIn, name})
+    });
 
-	if (!createGameResponse.ok) {
+    if (!createGameResponse.ok) {
         throw new Error("Failed to create game");
     }
-
-	window.location.replace("/lobby");
 }
 
 export async function deleteGame(id: bigint) {
-	const deleteGameResponse = await authFetch(`${BASE_URL}/delete/${id}`, {
-		method: "DELETE"
-	})
+    const deleteGameResponse = await authFetch(`${BASE_URL}/delete/${id}`, {
+        method: "DELETE"
+    })
 
-	if (!deleteGameResponse.ok) {
+    if (!deleteGameResponse.ok) {
         throw new Error("Failed to remove game with id " + id);
     }
-
+    /*TODO: fix replacing URL and page reload. Just remove item or fetch new items*/
     window.location.replace("/lobby");
 }

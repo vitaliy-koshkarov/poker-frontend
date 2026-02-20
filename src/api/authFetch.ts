@@ -1,6 +1,6 @@
-import { getToken } from "../auth/token";
+import {getToken} from "../auth/token";
 
-export async function authFetch(url: string, options: RequestInit = {}) {
+export async function authFetch(url: string, options: RequestInit = {}) : Promise<Response> {
     const token = getToken();
 
     return fetch(url, {
