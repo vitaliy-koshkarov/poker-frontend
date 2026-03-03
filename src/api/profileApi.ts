@@ -12,10 +12,10 @@ export async function getProfileInfo() {
     return getProfileInfoResponse.json();
 }
 
-export async function updateProfileInfo(email: string, nickname: string) {
+export async function updateProfileInfo(nickname: string) {
     const updateProfileInfoResponse = await authFetch(`${URL}/updateProfileInfo`, {
         method: "POST",
-        body: JSON.stringify({email, nickname})
+        body: JSON.stringify({nickname})
     });
 
     if (!updateProfileInfoResponse.ok) {
