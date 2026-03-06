@@ -2,11 +2,11 @@
     margin: 20px 0 20px 0;
 }
 
-.gameTableInfo {
-    padding: 60px 0 0 0;
+.gameInfo {
+    padding: 20px 0 0 0;
 }
 
-.gameTableTitle {
+.gameTitle {
     font-size: large;
     font-weight: bold;
 }

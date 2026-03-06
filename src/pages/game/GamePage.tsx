@@ -2,19 +2,19 @@ import {useParams, Link} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import {Client} from "@stomp/stompjs";
 import {getToken} from "../../auth/token.ts";
-import type {GameTable} from "../../model/GameTable.ts";
+import type {Game} from "../../model/Game.ts";
 import mainCss from "../Main.module.css";
-import gameTableCss from "./GameTable.module.css";
+import gameCss from "./Game.module.css";
 
-export default function GameTablePage() {
+export default function GamePage() {
     const stompClientRef = useRef<Client | null>(null);
     const brokerURL = "ws://localhost:8080/ws/game";
     const brokerDestinationPrefix = "topic";
-    const currentDestination = "gameTable"; // TODO: rename to something more appropriate
+    const currentDestination = "game"; // TODO: rename to something more appropriate
     const appDestinationPrefix = "kv-poker-game";
     const publishMessageName = "table"; // TODO: rename to something more appropriate
     const {id} = useParams();
-    const [gameTable, setGameTable] = useState<GameTable | null>(null);
+    const [game, setGame] = useState<Game | null>(null);
     const [newGameName, setNewGameName] = useState("");
 
     useEffect(() => {
@@ -41,8 +41,8 @@ export default function GameTablePage() {
                         // receive init data after subscription
                         console.log("Subscribe message: " + subscribeMessageCallback);
                         console.log("Subscribe message body: " + subscribeMessageCallback.body);
-                        const initData: GameTable = JSON.parse(subscribeMessageCallback.body);
-                        setGameTable(initData);
+                        const initData: Game = JSON.parse(subscribeMessageCallback.body);
+                        setGame(initData);
                     }
                 );
 
@@ -52,8 +52,8 @@ export default function GameTablePage() {
                         // receive game table data after Send (some action from player)
                         console.log("Received message: " + messageCallback);
                         console.log("Message body: " + messageCallback.body);
-                        const gameTableData: GameTable = JSON.parse(messageCallback.body).payload;
-                        setGameTable(gameTableData);
+                        const gameData: Game = JSON.parse(messageCallback.body).payload;
+                        setGame(gameData);
                     }
                 );
             },
@@ -99,26 +99,26 @@ export default function GameTablePage() {
 
     return (
         <div className={mainCss.page}>
-            <div className={mainCss.title}>Game table</div>
+            <div className={mainCss.title}>Game page</div>
 
-            <div className={gameTableCss.link}>
+            <div className={gameCss.link}>
                 <Link to="/lobby">Back to lobby</Link>
             </div>
 
-            <div style={{"padding": "20px 0px 20px 0px"}}>Page id: {id}</div>
-            <div>
-                <input placeholder="Game name" value={newGameName}
-                       onChange={e => setNewGameName(e.target.value)}/>
-                <button type="button" onClick={handleClick}>Change game name</button>
-            </div>
+            <div className={gameCss.gameInfo}>
+                <div className={gameCss.gameTitle}>Game {game?.name}</div>
+                <div>
+                    <input placeholder="Game name" value={newGameName}
+                           onChange={e => setNewGameName(e.target.value)}/>
+                    <button type="button" onClick={handleClick}>Change game name</button>
+                </div>
 
-            <div className={gameTableCss.gameTableInfo}>
-                <div className={gameTableCss.gameTableTitle}>Game Table</div>
-                {gameTable && <p>Table ID: {gameTable.id}</p>}
-                {gameTable && <p>Table name: {gameTable.name}</p>}
-                {gameTable && <p>Table current players: {gameTable.currentPlayers}</p>}
-                {gameTable && <p>Table max players: {gameTable.maxPlayers}</p>}
-                {gameTable && <p>Table buy-in: {gameTable.buyIn}</p>}
+                {game && <p>Game ID: {game.id}</p>}
+                {game && <p>Name: {game.name}</p>}
+                {game && <p>Current players: {game.currentPlayers}</p>}
+                {game && <p>Max players: {game.maxPlayers}</p>}
+                {game && <p>Buy-in: {game.buyIn}</p>}
+                {game && <p>status: {game.status}</p>}
             </div>
         </div>
     );

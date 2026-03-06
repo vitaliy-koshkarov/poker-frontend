@@ -5,7 +5,7 @@ import LoginPage from "./pages/login/LoginPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import LobbyPage from "./pages/lobby/LobbyPage";
 import CreateGamePage from "./pages/game/CreateGamePage";
-import GameTablePage from "./pages/game/GameTablePage";
+import GamePage from "./pages/game/GamePage.tsx";
 
 export default function App() {
     return (
@@ -16,7 +16,7 @@ export default function App() {
             <Route path="/profile" element={<ProfilePage/>}/>
             <Route path="/lobby" element={<LobbyPage/>}/>
             <Route path="/createGame" element={<CreateGamePage/>}/>
-            <Route path="/game/:id" element={<GameTablePage/>}/>
+            <Route path="/game/:id" element={<GamePage/>}/>
         </Routes>
     );
 }
