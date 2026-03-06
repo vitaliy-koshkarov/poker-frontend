@@ -25,7 +25,7 @@ export default function ProfilePage() {
 
     async function updProfileInfo(e: React.FormEvent) {
         e.preventDefault();
-        await updateProfileInfo(email, nickname);
+        await updateProfileInfo(nickname);
         setProfileInfoMessage("Profile updated");
     }
 
