@@ -9,4 +9,34 @@
 .gameTitle {
     font-size: large;
     font-weight: bold;
+    padding: 0 0 10px 0;
+    text-align: center;
+}
+
+.gameTable {
+    margin: 20px 0 20px 0;
+    border: 1px solid black;
+    width: 100%;
+}
+
+.players {
+    padding: 0 0 0 0;
+}
+
+.playersTitle {
+    text-align: center;
+    font-weight: bold;
+    padding: 0 0 10px 0;
+}
+
+.playersTable {
+    border: 1px solid black;
+    width: 100%;
+}
+
+.td {
+    border: 1px solid black;
+    width: 160px;
+    text-align: center;
+    word-break: break-all;
 }

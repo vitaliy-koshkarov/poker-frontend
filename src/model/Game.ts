@@ -1,3 +1,5 @@
+import type {Player} from "./Player.ts";
+
 export interface Game {
     id: bigint;
     currentPlayers: number;
@@ -5,4 +7,5 @@ export interface Game {
     buyIn: number;
     status: number,
     name: string;
+    players: Player[];
 }

@@ -10,7 +10,7 @@ export default function GamePage() {
     const stompClientRef = useRef<Client | null>(null);
     const brokerURL = "ws://localhost:8080/ws/game";
     const brokerDestinationPrefix = "topic";
-    const currentDestination = "game"; // TODO: rename to something more appropriate
+    const currentDestination = "gameTable"; // TODO: rename to something more appropriate
     const appDestinationPrefix = "kv-poker-game";
     const publishMessageName = "table"; // TODO: rename to something more appropriate
     const {id} = useParams();
@@ -113,12 +113,58 @@ export default function GamePage() {
                     <button type="button" onClick={handleClick}>Change game name</button>
                 </div>
 
-                {game && <p>Game ID: {game.id}</p>}
-                {game && <p>Name: {game.name}</p>}
-                {game && <p>Current players: {game.currentPlayers}</p>}
-                {game && <p>Max players: {game.maxPlayers}</p>}
-                {game && <p>Buy-in: {game.buyIn}</p>}
-                {game && <p>status: {game.status}</p>}
+                <div>
+                    <table className={gameCss.gameTable}>
+                        <thead>
+                        <tr>
+                            <td className={gameCss.td}>Game ID</td>
+                            <td className={gameCss.td}>Name</td>
+                            <td className={gameCss.td}>Current players</td>
+                            <td className={gameCss.td}>Max players</td>
+                            <td className={gameCss.td}>Buy-in</td>
+                            <td className={gameCss.td}>Status</td>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td className={gameCss.td}>{game?.id}</td>
+                            <td className={gameCss.td}>{game?.name}</td>
+                            <td className={gameCss.td}>{game?.currentPlayers}</td>
+                            <td className={gameCss.td}>{game?.maxPlayers}</td>
+                            <td className={gameCss.td}>{game?.buyIn}</td>
+                            <td className={gameCss.td}>{game?.status}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div className={gameCss.players}>
+                <div className={gameCss.playersTitle}>Players</div>
+                <table className={gameCss.playersTable}>
+                    <thead className={gameCss.thead}>
+                    <tr>
+                        <td className={gameCss.td}>Id</td>
+                        <td className={gameCss.td}>Nickname</td>
+                        <td className={gameCss.td}>Status</td>
+                        <td className={gameCss.td}>Chips</td>
+                        <td className={gameCss.td}>Current bet</td>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {game?.players?.map(player => (
+                        <tr key={player.id}>
+                            <td className={gameCss.td}>{player.id}</td>
+                            <td className={gameCss.td}>{player.nickname}</td>
+                            <td className={gameCss.td}>{player.status}</td>
+                            <td className={gameCss.td}>{player.chips}</td>
+                            <td className={gameCss.td}>{player.currentBet}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
