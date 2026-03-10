@@ -11,7 +11,7 @@ export default function CreateGamePage() {
 
     const navigateTo = useNavigate();
 
-    const createGame = (maxPlayers: number, buyIn: number, name: string) => {
+    function createGame(maxPlayers: number, buyIn: number, name: string) {
         createGameRequest(maxPlayers, buyIn, name)
         .then(returnBack);
     }
