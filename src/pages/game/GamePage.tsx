@@ -114,8 +114,8 @@ export default function GamePage() {
                     <button type="button" onClick={handleClick}>Change game name</button>
                 </div>
             </div>
-            {gameState && <GameTable game={gameState.game}/>}
-            {gameState && <PlayersTable players={gameState.players}/>}
+            {gameState && <GameTable game={gameState.gameDTO}/>}
+            {gameState && <PlayersTable players={gameState.playerDTOList}/>}
         </div>
     );
 }
