@@ -7,15 +7,11 @@ import gameCss from "../../assets/css/game/GamePage.module.css";
 import {PlayersTable} from "../../components/game/PlayersTable.tsx";
 import {GameTable} from "../../components/game/GameTable.tsx";
 import type {GameState} from "../../model/GameState.ts";
-import {StartGameBtn} from "../../components/game/StartGameBtn.tsx";
+import {StartGameBtn} from "../../components/game/buttons/StartGameBtn.tsx";
+import {brokerURL, brokerDestinationPrefix, currentDestination, appDestinationPrefix, publishMessageName} from "../../auth/paths.ts";
 
 export default function GamePage() {
     const stompClientRef = useRef<Client | null>(null);
-    const brokerURL = "ws://localhost:8080/ws/game";
-    const brokerDestinationPrefix = "topic";
-    const currentDestination = "gameTable"; // TODO: rename to something more appropriate
-    const appDestinationPrefix = "kv-poker-game";
-    const publishMessageName = "table"; // TODO: rename to something more appropriate
     const {id} = useParams();
     const [gameState, setGameState] = useState<GameState | null>(null);
 
@@ -99,11 +95,11 @@ export default function GamePage() {
             </div>
 
             {gameState?.gameDTO.status == 0 && <StartGameBtn stompClient={stompClientRef}
-                                                 path={`/${appDestinationPrefix}/${publishMessageName}/${id}/startGame`}
-                                                 gameId={gameState.gameDTO.id}/>
+                                                             path={`/${appDestinationPrefix}/${publishMessageName}/${id}/startGame`}
+                                                             gameId={gameState.gameDTO.id}/>
             }
             {gameState && <GameTable game={gameState.gameDTO}/>}
-            {gameState && <PlayersTable players={gameState.playerDTOList}/>}
+            {gameState && <PlayersTable stompClient={stompClientRef} gameId={gameState.gameDTO.id} players={gameState.playerDTOList}/>}
         </div>
     );
 }

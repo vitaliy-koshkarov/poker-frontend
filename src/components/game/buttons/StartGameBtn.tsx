@@ -1,4 +1,4 @@
-import gameCss from "../../assets/css/game/GamePage.module.css";
+import gameCss from "../../../assets/css/game/GamePage.module.css";
 import type {StartGameBtnProps} from "./StartGameBtnProps.ts";
 
 export function StartGameBtn({stompClient, path, gameId}: StartGameBtnProps) {

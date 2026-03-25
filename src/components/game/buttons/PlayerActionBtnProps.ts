@@ -1,9 +1,9 @@
-import type {Player} from "../../model/Player.ts";
 import type {RefObject} from "react";
 import type {Client} from "@stomp/stompjs";
 
-export type PlayerTableProps = {
+export interface PlayerActionBtnProps {
     stompClient: RefObject<Client | null>,
-    gameId: bigint,
-    players: Player[];
+    path: string,
+    name: string,
+    playerId: bigint
 }
