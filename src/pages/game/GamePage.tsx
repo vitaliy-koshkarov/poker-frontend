@@ -8,7 +8,12 @@ import {PlayersTable} from "../../components/game/PlayersTable.tsx";
 import {GameTable} from "../../components/game/GameTable.tsx";
 import type {GameState} from "../../model/GameState.ts";
 import {StartGameBtn} from "../../components/game/buttons/StartGameBtn.tsx";
-import {brokerURL, brokerDestinationPrefix, currentDestination, appDestinationPrefix, publishMessageName} from "../../auth/paths.ts";
+import {
+    brokerURL,
+    subscribeInitGamePath,
+    subscribeToReceiveGameStateDataPath,
+    playerActionPath,
+} from "../../auth/paths.ts";
 
 export default function GamePage() {
     const stompClientRef = useRef<Client | null>(null);
@@ -34,7 +39,7 @@ export default function GamePage() {
                 console.log("Connected " + connectFrame);
 
                 stompClient.subscribe(
-                    `/${appDestinationPrefix}/${currentDestination}/${id}`,
+                    `${subscribeInitGamePath}/${id}`,
                     subscribeMessageCallback => {
                         // receive init data after subscription
                         console.log("Subscribe message: " + subscribeMessageCallback);
@@ -45,7 +50,7 @@ export default function GamePage() {
                 );
 
                 stompClient.subscribe(
-                    `/${brokerDestinationPrefix}/${currentDestination}/${id}`,
+                    `${subscribeToReceiveGameStateDataPath}/${id}`,
                     messageCallback => {
                         // receive game table data after Send (some action from player)
                         console.log("Received message: " + messageCallback);
@@ -95,11 +100,12 @@ export default function GamePage() {
             </div>
 
             {gameState?.gameDTO.status == 0 && <StartGameBtn stompClient={stompClientRef}
-                                                             path={`/${appDestinationPrefix}/${publishMessageName}/${id}/startGame`}
+                                                             path={`${playerActionPath}/${id}/startGame`}
                                                              gameId={gameState.gameDTO.id}/>
             }
             {gameState && <GameTable game={gameState.gameDTO}/>}
-            {gameState && <PlayersTable stompClient={stompClientRef} gameId={gameState.gameDTO.id} players={gameState.playerDTOList}/>}
+            {gameState && <PlayersTable stompClient={stompClientRef} gameId={gameState.gameDTO.id}
+                                        players={gameState.playerDTOList}/>}
         </div>
     );
 }

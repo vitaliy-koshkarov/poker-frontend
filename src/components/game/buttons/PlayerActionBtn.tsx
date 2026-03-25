@@ -4,7 +4,7 @@ export function PlayerActionBtn({name, path, playerId}: PlayerActionBtnProps) {
 
     function handleClick() {
         console.log("Player " + playerId + " " + name + " to " + path);
-    //     TODO: send player action
+        //     TODO: send player action
     }
 
     return (

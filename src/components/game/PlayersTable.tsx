@@ -28,9 +28,12 @@ export function PlayersTable({stompClient, gameId, players}: PlayerTableProps) {
                         <td className={gameCss.td}>{player.chips}</td>
                         <td className={gameCss.td}>{player.currentBet}</td>
                         <td className={gameCss.td}>
-                            <PlayerActionBtn stompClient={stompClient} path={`${playerActionPath}/${gameId}`} name={'Fold'} playerId={player.id}/>
-                            <PlayerActionBtn stompClient={stompClient} path={`${playerActionPath}/${gameId}`} name={'Check'} playerId={player.id}/>
-                            <PlayerActionBtn stompClient={stompClient} path={`${playerActionPath}/${gameId}`} name={'Bet'} playerId={player.id}/>
+                            <PlayerActionBtn stompClient={stompClient} path={`${playerActionPath}/${gameId}`}
+                                             name={'Fold'} playerId={player.id}/>
+                            <PlayerActionBtn stompClient={stompClient} path={`${playerActionPath}/${gameId}`}
+                                             name={'Check'} playerId={player.id}/>
+                            <PlayerActionBtn stompClient={stompClient} path={`${playerActionPath}/${gameId}`}
+                                             name={'Bet'} playerId={player.id}/>
                         </td>
                     </tr>
                 ))}

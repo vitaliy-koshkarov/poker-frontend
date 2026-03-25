@@ -4,7 +4,7 @@ import type {GameTableProps} from "./GameTableProps.ts";
 export function GameTable({game}: GameTableProps) {
     return (
         <div>
-            <div className={gameCss.gameTitle}>Game {game?.name}</div>
+            <div className={gameCss.gameTitle}>Game '{game?.name}'</div>
             <table className={gameCss.gameTable}>
                 <thead>
                 <tr>
