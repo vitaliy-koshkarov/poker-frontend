@@ -7,6 +7,7 @@ import gameCss from "./GamePage.module.css";
 import {PlayersTable} from "../../components/game/PlayersTable.tsx";
 import {GameTable} from "../../components/game/GameTable.tsx";
 import type {GameState} from "../../model/GameState.ts";
+import {StartGameBtn} from "../../components/game/StartGameBtn.tsx";
 
 export default function GamePage() {
     const stompClientRef = useRef<Client | null>(null);
@@ -17,7 +18,6 @@ export default function GamePage() {
     const publishMessageName = "table"; // TODO: rename to something more appropriate
     const {id} = useParams();
     const [gameState, setGameState] = useState<GameState | null>(null);
-    const [newGameName, setNewGameName] = useState("");
 
     useEffect(() => {
         /* TODO: implement WebSocket connection on App level. For example:
@@ -90,15 +90,6 @@ export default function GamePage() {
         };
     }, [id]);
 
-    function handleClick() {
-        console.log("new game name: " + newGameName);
-        stompClientRef.current?.publish({
-            destination: `/${appDestinationPrefix}/${publishMessageName}/${id}`,
-            body: newGameName // TODO: null check
-        });
-        setNewGameName("");
-    }
-
     return (
         <div className={mainCss.page}>
             <div className={mainCss.title}>Game page</div>
@@ -107,13 +98,10 @@ export default function GamePage() {
                 <Link to="/lobby">Back to lobby</Link>
             </div>
 
-            <div className={gameCss.gameInfo}>
-                <div>
-                    <input placeholder="Game name" value={newGameName}
-                           onChange={e => setNewGameName(e.target.value)}/>
-                    <button type="button" onClick={handleClick}>Change game name</button>
-                </div>
-            </div>
+            {gameState?.gameDTO.status == 0 && <StartGameBtn stompClient={stompClientRef}
+                                                 path={`/${appDestinationPrefix}/${publishMessageName}/${id}/startGame`}
+                                                 gameId={gameState.gameDTO.id}/>
+            }
             {gameState && <GameTable game={gameState.gameDTO}/>}
             {gameState && <PlayersTable players={gameState.playerDTOList}/>}
         </div>
