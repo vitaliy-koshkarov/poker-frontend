@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
-import mainCss from "../Main.module.css";
-import welcomeCss from "./Welcome.module.css";
+import mainCss from "../../assets/css/Main.module.css";
+import welcomeCss from "../../assets/css/welcome/Welcome.module.css";
 
 export default function WelcomePage() {
     const navigateTo = useNavigate();

@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import {useNavigate, Link} from "react-router-dom";
 import {register} from "../../api/authApi";
 import {saveToken} from "../../auth/token";
-import mainCss from "../Main.module.css";
-import registrationCss from "./Registration.module.css"
+import mainCss from "../../assets/css/Main.module.css";
+import registrationCss from "../../assets/css/registration/Registration.module.css"
 
 export default function RegistrationPage() {
     const [email, setEmail] = useState("");

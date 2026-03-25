@@ -2,8 +2,8 @@ import {useState, useEffect} from "react";
 import {useNavigate, Link} from "react-router-dom";
 import {fetchGames, deleteGame} from "../../api/games/gamesApi.ts";
 import {logout} from "../../api/authApi.ts";
-import mainCss from "../Main.module.css";
-import lobbyCss from "./Lobby.module.css";
+import mainCss from "../../assets/css/Main.module.css";
+import lobbyCss from "../../assets/css/lobby/Lobby.module.css";
 import type {Game} from "../../model/Game.ts";
 
 export default function LobbyPage() {

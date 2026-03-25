@@ -2,8 +2,8 @@ import React, {useState, useEffect} from "react";
 import {Link} from "react-router-dom";
 import {getProfileInfo, updateProfileInfo, updatePassword} from "../../api/profileApi";
 import {logout} from "../../api/authApi.ts";
-import mainCss from "../Main.module.css";
-import profileCss from "./Profile.module.css";
+import mainCss from "../../assets/css/Main.module.css";
+import profileCss from "../../assets/css/profile/Profile.module.css";
 
 export default function ProfilePage() {
     const [email, setEmail] = useState("");

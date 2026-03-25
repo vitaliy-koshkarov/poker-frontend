@@ -1,4 +1,4 @@
-import gameCss from "./PlayersTable.module.css";
+import gameCss from "../../assets/css/game/PlayersTable.module.css";
 import type {PlayerTableProps} from "./PlayerTableProps.ts";
 
 export function PlayersTable({players}: PlayerTableProps) {

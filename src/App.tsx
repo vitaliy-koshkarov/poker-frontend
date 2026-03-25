@@ -3,7 +3,7 @@ import WelcomePage from "./pages/welcome/WelcomePage";
 import RegistrationPage from "./pages/registration/RegistrationPage";
 import LoginPage from "./pages/login/LoginPage";
 import ProfilePage from "./pages/profile/ProfilePage";
-import LobbyPage from "./pages/lobby/LobbyPage";
+import LobbyPage from "./pages/lobby/LobbyPage.tsx";
 import CreateGamePage from "./pages/game/CreateGamePage";
 import GamePage from "./pages/game/GamePage.tsx";
 
