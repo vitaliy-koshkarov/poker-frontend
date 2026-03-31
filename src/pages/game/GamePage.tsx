@@ -20,7 +20,7 @@ export default function GamePage() {
     const stompClientRef = useRef<Client | null>(null);
     const {id} = useParams();
     const [gameState, setGameState] = useState<GameState | null>(null);
-    const [currentPlayerId, setCurrentPlayerId] = useState<number>(0);
+    const [currentPlayerId, setCurrentPlayerId] = useState<bigint>(BigInt(0));
 
     useEffect(() => {
         /* TODO: implement WebSocket connection on App level. For example:
@@ -35,6 +35,7 @@ export default function GamePage() {
 
         getCurrentPlayerId()
             .then(data => {
+                console.log("Current player id " + data);
                 setCurrentPlayerId(data)
             });
 
@@ -114,8 +115,7 @@ export default function GamePage() {
                                  gameId={gameState.gameDTO.id}/>
             }
             {gameState && <GameTable game={gameState.gameDTO}/>}
-            {gameState && <PlayersTable stompClient={stompClientRef} gameId={gameState.gameDTO.id}
-                                        players={gameState.playerDTOList}/>}
+            {gameState && <PlayersTable stompClient={stompClientRef} gameState={gameState} currentPlayerId={currentPlayerId}/>}
         </div>
     );
 }

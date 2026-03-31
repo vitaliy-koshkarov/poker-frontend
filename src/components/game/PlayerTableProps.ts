@@ -1,9 +1,9 @@
-import type {Player} from "../../model/Player.ts";
 import type {RefObject} from "react";
 import type {Client} from "@stomp/stompjs";
+import type {GameState} from "../../model/GameState.ts";
 
 export type PlayerTableProps = {
     stompClient: RefObject<Client | null>,
-    gameId: bigint,
-    players: Player[];
+    gameState: GameState,
+    currentPlayerId: bigint;
 }

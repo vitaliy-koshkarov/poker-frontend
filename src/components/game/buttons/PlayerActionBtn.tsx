@@ -1,6 +1,7 @@
 import type {PlayerActionBtnProps} from "./PlayerActionBtnProps.ts";
 
-export function PlayerActionBtn({name, path, playerId}: PlayerActionBtnProps) {
+export function PlayerActionBtn({name, playerId, path, disabled}: PlayerActionBtnProps) {
+    // TODO: btn disabled depending on the game status
 
     function handleClick() {
         console.log("Player " + playerId + " " + name + " to " + path);
@@ -8,6 +9,6 @@ export function PlayerActionBtn({name, path, playerId}: PlayerActionBtnProps) {
     }
 
     return (
-        <button onClick={handleClick}>{name}</button>
+        <button disabled={disabled} onClick={handleClick}>{name}</button>
     );
 }

@@ -5,12 +5,12 @@ export class Game {
     buyIn: number;
     status: number;
     name: string;
-    creatorPlayerId: number;
+    creatorPlayerId: bigint;
     dealerId: number;
-    activePlayerId: number;
+    activePlayerId: bigint;
 
     constructor(id: bigint, currentPlayers: number, maxPlayers: number, buyIn: number, status: number, name: string,
-                creatorPlayerId: number, dealerId: number, activePlayerId: number) {
+                creatorPlayerId: bigint, dealerId: number, activePlayerId: bigint) {
         this.id = id;
         this.currentPlayers = currentPlayers;
         this.maxPlayers = maxPlayers;
