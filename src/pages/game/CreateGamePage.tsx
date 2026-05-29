@@ -7,13 +7,13 @@ import createGameCss from "../../assets/css/game/CreateGame.module.css";
 export default function CreateGamePage() {
     const [name, setName] = useState("");
     const [maxPlayers, setMaxPlayers] = useState(2);
-    const [buyIn, setBuyIn] = useState(50);
+    const [buyIn, setBuyIn] = useState(100);
 
     const navigateTo = useNavigate();
 
     function createGame(maxPlayers: number, buyIn: number, name: string) {
         createGameRequest(maxPlayers, buyIn, name)
-        .then(returnBack);
+            .then(returnBack);
     }
 
     function returnBack() {
@@ -48,7 +48,6 @@ export default function CreateGamePage() {
                 <label>Buy-in: </label>
                 <select value={buyIn}
                         onChange={e => setBuyIn(Number(e.target.value))}>
-                    <option value="50">50</option>
                     <option value="100">100</option>
                     <option value="200">200</option>
                     <option value="500">500</option>
