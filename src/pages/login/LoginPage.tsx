@@ -2,8 +2,8 @@ import React, {useState} from "react";
 import {useNavigate, Link} from "react-router-dom";
 import {saveToken} from "../../auth/token.ts";
 import {login} from "../../api/authApi.ts";
-import mainCss from "../Main.module.css";
-import loginCss from "./Login.module.css";
+import mainCss from "../../assets/css/Main.module.css";
+import loginCss from "../../assets/css/login/Login.module.css";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");

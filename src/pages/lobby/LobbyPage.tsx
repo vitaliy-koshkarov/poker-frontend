@@ -2,12 +2,12 @@ import {useState, useEffect} from "react";
 import {useNavigate, Link} from "react-router-dom";
 import {fetchGames, deleteGame} from "../../api/games/gamesApi.ts";
 import {logout} from "../../api/authApi.ts";
-import mainCss from "../Main.module.css";
-import lobbyCss from "./Lobby.module.css";
-import type {GameTable} from "../../model/GameTable";
+import mainCss from "../../assets/css/Main.module.css";
+import lobbyCss from "../../assets/css/lobby/Lobby.module.css";
+import type {Game} from "../../model/Game.ts";
 
 export default function LobbyPage() {
-    const [gameTables, setGameTables] = useState<GameTable[]>([]);
+    const [gameTables, setGameTables] = useState<Game[]>([]);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -52,6 +52,7 @@ export default function LobbyPage() {
                             <td className={lobbyCss.td}>Name</td>
                             <td className={lobbyCss.td}>Players</td>
                             <td className={lobbyCss.td}>Buy-in</td>
+                            <td className={lobbyCss.td}>Status</td>
                             <td className={lobbyCss.td}>Join</td>
                             <td className={lobbyCss.td}>Remove game</td>
                         </tr>
@@ -64,6 +65,7 @@ export default function LobbyPage() {
                                 <td className={lobbyCss.td}>{gameTable.name}</td>
                                 <td className={lobbyCss.td}>{gameTable.currentPlayers}/{gameTable.maxPlayers}</td>
                                 <td className={lobbyCss.td}>{gameTable.buyIn}</td>
+                                <td className={lobbyCss.td}>{gameTable.status}</td>
                                 <td className={lobbyCss.td}>
                                     <button className={lobbyCss.joinGameBtn} type="button"
                                             onClick={() => navigateToGameTable(gameTable.id)}>

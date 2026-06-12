@@ -49,3 +49,17 @@ export async function logout() {
 
     window.location.replace("/");
 }
+
+export async function getCurrentPlayerId() {
+    const meResponse = await authFetch(`${API_URL}/getCurrentPlayerId`, {
+        method: "GET"
+    });
+
+    if (!meResponse.ok) {
+        throw new Error("Logout error");
+    }
+
+    const data = await meResponse.json();
+
+    return data.currentPlayerId;
+}

@@ -2,20 +2,25 @@ import {useParams, Link} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import {Client} from "@stomp/stompjs";
 import {getToken} from "../../auth/token.ts";
-import type {GameTable} from "../../model/GameTable.ts";
-import mainCss from "../Main.module.css";
-import gameTableCss from "./GameTable.module.css";
+import mainCss from "../../assets/css/Main.module.css";
+import gameCss from "../../assets/css/game/GamePage.module.css";
+import {PlayersTable} from "../../components/game/PlayersTable.tsx";
+import {GameTable} from "../../components/game/GameTable.tsx";
+import type {GameState} from "../../model/GameState.ts";
+import {StartGameBtn} from "../../components/game/buttons/StartGameBtn.tsx";
+import {
+    brokerURL,
+    subscribeInitGamePath,
+    subscribeToReceiveGameStateDataPath,
+    playerActionPath,
+} from "../../auth/paths.ts";
+import {getCurrentPlayerId} from "../../api/authApi.ts";
 
-export default function GameTablePage() {
+export default function GamePage() {
     const stompClientRef = useRef<Client | null>(null);
-    const brokerURL = "ws://localhost:8080/ws/game";
-    const brokerDestinationPrefix = "topic";
-    const currentDestination = "gameTable"; // TODO: rename to something more appropriate
-    const appDestinationPrefix = "kv-poker-game";
-    const publishMessageName = "table"; // TODO: rename to something more appropriate
     const {id} = useParams();
-    const [gameTable, setGameTable] = useState<GameTable | null>(null);
-    const [newGameName, setNewGameName] = useState("");
+    const [gameState, setGameState] = useState<GameState | null>(null);
+    const [currentPlayerId, setCurrentPlayerId] = useState<bigint>(BigInt(0));
 
     useEffect(() => {
         /* TODO: implement WebSocket connection on App level. For example:
@@ -27,6 +32,13 @@ export default function GameTablePage() {
                 </Router>
               </WebSocketProvider>
             </App>*/
+
+        getCurrentPlayerId()
+            .then(data => {
+                console.log("Current player id " + data);
+                setCurrentPlayerId(data)
+            });
+
         const stompClient = new Client({
             brokerURL: `${brokerURL}`,
             connectHeaders: {
@@ -36,24 +48,24 @@ export default function GameTablePage() {
                 console.log("Connected " + connectFrame);
 
                 stompClient.subscribe(
-                    `/${appDestinationPrefix}/${currentDestination}/${id}`,
+                    `${subscribeInitGamePath}/${id}`,
                     subscribeMessageCallback => {
                         // receive init data after subscription
                         console.log("Subscribe message: " + subscribeMessageCallback);
                         console.log("Subscribe message body: " + subscribeMessageCallback.body);
-                        const initData: GameTable = JSON.parse(subscribeMessageCallback.body);
-                        setGameTable(initData);
+                        const initGameStateData: GameState = JSON.parse(subscribeMessageCallback.body);
+                        setGameState(initGameStateData);
                     }
                 );
 
                 stompClient.subscribe(
-                    `/${brokerDestinationPrefix}/${currentDestination}/${id}`,
+                    `${subscribeToReceiveGameStateDataPath}/${id}`,
                     messageCallback => {
                         // receive game table data after Send (some action from player)
                         console.log("Received message: " + messageCallback);
                         console.log("Message body: " + messageCallback.body);
-                        const gameTableData: GameTable = JSON.parse(messageCallback.body).payload;
-                        setGameTable(gameTableData);
+                        const gameStateData: GameState = JSON.parse(messageCallback.body).payload;
+                        setGameState(gameStateData);
                     }
                 );
             },
@@ -88,38 +100,22 @@ export default function GameTablePage() {
         };
     }, [id]);
 
-    function handleClick() {
-        console.log("new game name: " + newGameName);
-        stompClientRef.current?.publish({
-            destination: `/${appDestinationPrefix}/${publishMessageName}/${id}`,
-            body: newGameName // TODO: null check
-        });
-        setNewGameName("");
-    }
-
     return (
         <div className={mainCss.page}>
-            <div className={mainCss.title}>Game table</div>
+            <div className={mainCss.title}>Game page</div>
 
-            <div className={gameTableCss.link}>
+            <div className={gameCss.link}>
                 <Link to="/lobby">Back to lobby</Link>
             </div>
 
-            <div style={{"padding": "20px 0px 20px 0px"}}>Page id: {id}</div>
-            <div>
-                <input placeholder="Game name" value={newGameName}
-                       onChange={e => setNewGameName(e.target.value)}/>
-                <button type="button" onClick={handleClick}>Change game name</button>
-            </div>
-
-            <div className={gameTableCss.gameTableInfo}>
-                <div className={gameTableCss.gameTableTitle}>Game Table</div>
-                {gameTable && <p>Table ID: {gameTable.id}</p>}
-                {gameTable && <p>Table name: {gameTable.name}</p>}
-                {gameTable && <p>Table current players: {gameTable.currentPlayers}</p>}
-                {gameTable && <p>Table max players: {gameTable.maxPlayers}</p>}
-                {gameTable && <p>Table buy-in: {gameTable.buyIn}</p>}
-            </div>
+            {gameState?.gameDTO.status == 0
+                && (gameState.gameDTO.creatorPlayerId === currentPlayerId)
+                && <StartGameBtn stompClient={stompClientRef}
+                                 path={`${playerActionPath}/${id}/startGame`}
+                                 gameId={gameState.gameDTO.id}/>
+            }
+            {gameState && <GameTable game={gameState.gameDTO}/>}
+            {gameState && <PlayersTable stompClient={stompClientRef} gameState={gameState} currentPlayerId={currentPlayerId}/>}
         </div>
     );
 }
