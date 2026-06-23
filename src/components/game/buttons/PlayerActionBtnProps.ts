@@ -1,10 +1,12 @@
 import type {RefObject} from "react";
 import type {Client} from "@stomp/stompjs";
+import type {Player} from "../../../model/Player.ts";
 
 export interface PlayerActionBtnProps {
+    btnName: string,
     stompClient: RefObject<Client | null>,
-    playerId: bigint,
+    player: Player,
     path: string,
-    name: string,
-    disabled: boolean;
+    disabled: boolean,
+    action: string;
 }

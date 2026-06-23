@@ -28,21 +28,24 @@ export function PlayersTable({stompClient, gameState, currentPlayerId}: PlayerTa
                         <td className={gameCss.td}>{player.chips}</td>
                         <td className={gameCss.td}>{player.currentBet}</td>
                         <td className={gameCss.td}>
-                            <PlayerActionBtn stompClient={stompClient}
-                                             playerId={player.id}
-                                             path={`${playerActionPath}/${gameState.gameDTO.id}`}
-                                             name={'Fold'}
-                                             disabled={ !(player.id == currentPlayerId && player.id == gameState.gameDTO.activePlayerId) }/>
-                            <PlayerActionBtn stompClient={stompClient}
-                                             playerId={player.id}
-                                             path={`${playerActionPath}/${gameState.gameDTO.id}`}
-                                             name={'Check'}
-                                             disabled={ !(player.id == currentPlayerId && player.id == gameState.gameDTO.activePlayerId) }/>
-                            <PlayerActionBtn stompClient={stompClient}
-                                             playerId={player.id}
-                                             path={`${playerActionPath}/${gameState.gameDTO.id}`}
-                                             name={'Bet'}
-                                             disabled={ !(player.id == currentPlayerId && player.id == gameState.gameDTO.activePlayerId) }/>
+                            <PlayerActionBtn btnName={"Fold"}
+                                             stompClient={stompClient}
+                                             player={player}
+                                             path={`${playerActionPath}/${gameState.gameDTO.id}/action`}
+                                             disabled={ !(player.id == currentPlayerId && player.id == gameState.gameDTO.activePlayerId) }
+                                             action={"FOLD"}/>
+                            <PlayerActionBtn btnName={"Check"}
+                                             stompClient={stompClient}
+                                             player={player}
+                                             path={`${playerActionPath}/${gameState.gameDTO.id}/action`}
+                                             disabled={ !(player.id == currentPlayerId && player.id == gameState.gameDTO.activePlayerId) }
+                                             action={"CHECK"}/>
+                            <PlayerActionBtn btnName={"Bet"}
+                                             stompClient={stompClient}
+                                             player={player}
+                                             path={`${playerActionPath}/${gameState.gameDTO.id}/action`}
+                                             disabled={ !(player.id == currentPlayerId && player.id == gameState.gameDTO.activePlayerId) }
+                                             action={"BET"}/>
                         </td>
                     </tr>
                 ))}
