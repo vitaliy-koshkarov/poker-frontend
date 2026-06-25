@@ -1,15 +1,14 @@
 import type {PlayerActionBtnProps} from "./PlayerActionBtnProps.ts";
 import {PlayerActionRequest} from "./PlayerActionRequest.ts";
 
-export function PlayerActionBtn({btnName, stompClient, player, path, disabled, action}: PlayerActionBtnProps) {
-    // TODO: btn disabled depending on the game status
+export function PlayerActionBtn({btnName, stompClient, playerId, path, disabled, actionName}: PlayerActionBtnProps) {
 
     function handleClick() {
-        console.log("Player " + player.id + " action " + action + " to " + path);
-        //     TODO: send player action
+        console.log("Player " + playerId + " action " + actionName + " to " + path);
+
         stompClient.current?.publish({
             destination: path,
-            body: JSON.stringify(new PlayerActionRequest(action))
+            body: JSON.stringify(new PlayerActionRequest(actionName))
         });
     }
 

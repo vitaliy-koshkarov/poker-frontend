@@ -30,22 +30,22 @@ export function PlayersTable({stompClient, gameState, currentPlayerId}: PlayerTa
                         <td className={gameCss.td}>
                             <PlayerActionBtn btnName={"Fold"}
                                              stompClient={stompClient}
-                                             player={player}
+                                             playerId={player.id}
                                              path={`${playerActionPath}/${gameState.gameDTO.id}/action`}
                                              disabled={ !(player.id == currentPlayerId && player.id == gameState.gameDTO.activePlayerId) }
-                                             action={"FOLD"}/>
+                                             actionName={"FOLD"}/>
                             <PlayerActionBtn btnName={"Check"}
                                              stompClient={stompClient}
-                                             player={player}
+                                             playerId={player.id}
                                              path={`${playerActionPath}/${gameState.gameDTO.id}/action`}
                                              disabled={ !(player.id == currentPlayerId && player.id == gameState.gameDTO.activePlayerId) }
-                                             action={"CHECK"}/>
+                                             actionName={"CHECK"}/>
                             <PlayerActionBtn btnName={"Bet"}
                                              stompClient={stompClient}
-                                             player={player}
+                                             playerId={player.id}
                                              path={`${playerActionPath}/${gameState.gameDTO.id}/action`}
                                              disabled={ !(player.id == currentPlayerId && player.id == gameState.gameDTO.activePlayerId) }
-                                             action={"BET"}/>
+                                             actionName={"BET"}/>
                         </td>
                     </tr>
                 ))}

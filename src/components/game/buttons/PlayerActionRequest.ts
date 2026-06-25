@@ -1,7 +1,7 @@
 export class PlayerActionRequest{
-    action: string;
+    actionName: string;
 
-    constructor(action: string) {
-        this.action = action;
+    constructor(actionName: string) {
+        this.actionName = actionName;
     }
 }

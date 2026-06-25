@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import {useNavigate, Link} from "react-router-dom";
-import {fetchGames, deleteGame} from "../../api/games/gamesApi.ts";
+import {fetchGames, deleteGame} from "../../api/game/gameApi.ts";
 import {logout} from "../../api/authApi.ts";
 import mainCss from "../../assets/css/Main.module.css";
 import lobbyCss from "../../assets/css/lobby/Lobby.module.css";
@@ -22,7 +22,7 @@ export default function LobbyPage() {
         navigateTo("/createGame");
     }
 
-    const navigateToGameTable = (gameTableId: bigint) => {
+    const navigateToGameTable = (gameTableId: number) => {
         navigateTo(`/game/${gameTableId}`)
     }
 

@@ -1,13 +1,13 @@
 import gameCss from "../../../assets/css/game/GamePage.module.css";
-import type {StartGameBtnProps} from "./StartGameBtnProps.ts";
+import {startGame} from "../../../api/game/gameApi.ts";
+import {StartGameRequest} from "./StartGameRequest.ts";
 
-export function StartGameBtn({stompClient, path, gameId}: StartGameBtnProps) {
+export function StartGameBtn(req: StartGameRequest) {
 
     function handleClick() {
-        console.log("Start new game " + gameId);
-        stompClient.current?.publish({
-            destination: path
-        });
+        console.log("Start new game id " + req.gameId + " by player id " + req.playerId);
+
+        startGame(req);
     }
 
     return (
