@@ -1,16 +1,16 @@
 export class Game {
-    id: bigint;
+    id: number;
     currentPlayers: number;
     maxPlayers: number;
     buyIn: number;
     status: number;
     name: string;
-    creatorPlayerId: bigint;
+    creatorPlayerId: number;
     dealerId: number;
-    activePlayerId: bigint;
+    activePlayerId: number;
 
-    constructor(id: bigint, currentPlayers: number, maxPlayers: number, buyIn: number, status: number, name: string,
-                creatorPlayerId: bigint, dealerId: number, activePlayerId: bigint) {
+    constructor(id: number, currentPlayers: number, maxPlayers: number, buyIn: number, status: number, name: string,
+                creatorPlayerId: number, dealerId: number, activePlayerId: number) {
         this.id = id;
         this.currentPlayers = currentPlayers;
         this.maxPlayers = maxPlayers;

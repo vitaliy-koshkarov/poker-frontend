@@ -5,5 +5,5 @@ import type {GameState} from "../../model/GameState.ts";
 export type PlayerTableProps = {
     stompClient: RefObject<Client | null>,
     gameState: GameState,
-    currentPlayerId: bigint;
+    currentPlayerId: number;
 }

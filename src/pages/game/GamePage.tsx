@@ -15,12 +15,13 @@ import {
     playerActionPath,
 } from "../../auth/paths.ts";
 import {getCurrentPlayerId} from "../../api/authApi.ts";
+import {PlayerActionBtn} from "../../components/game/buttons/PlayerActionBtn.tsx";
 
 export default function GamePage() {
     const stompClientRef = useRef<Client | null>(null);
     const {id} = useParams();
     const [gameState, setGameState] = useState<GameState | null>(null);
-    const [currentPlayerId, setCurrentPlayerId] = useState<bigint>(BigInt(0));
+    const [currentPlayerId, setCurrentPlayerId] = useState<number>(0);
 
     useEffect(() => {
         /* TODO: implement WebSocket connection on App level. For example:
@@ -108,14 +109,27 @@ export default function GamePage() {
                 <Link to="/lobby">Back to lobby</Link>
             </div>
 
+            {gameState?.gameDTO.status == 0 && <PlayerActionBtn btnName={"Join the table"}
+                                                                stompClient={stompClientRef}
+                                                                playerId={currentPlayerId}
+                                                                path={`${playerActionPath}/${gameState.gameDTO.id}/action`}
+                                                                disabled={ (gameState.gameDTO.currentPlayers >= gameState.gameDTO.maxPlayers) }
+                                                                actionName={"JOIN"}></PlayerActionBtn>
+            }
+
             {gameState?.gameDTO.status == 0
                 && (gameState.gameDTO.creatorPlayerId === currentPlayerId)
-                && <StartGameBtn stompClient={stompClientRef}
-                                 path={`${playerActionPath}/${id}/startGame`}
-                                 gameId={gameState.gameDTO.id}/>
+                && <StartGameBtn gameId={gameState.gameDTO.id}
+                                 playerId={currentPlayerId}/>
             }
+
             {gameState && <GameTable game={gameState.gameDTO}/>}
-            {gameState && <PlayersTable stompClient={stompClientRef} gameState={gameState} currentPlayerId={currentPlayerId}/>}
+
+            {gameState &&
+                <PlayersTable stompClient={stompClientRef}
+                              gameState={gameState}
+                              currentPlayerId={currentPlayerId}/>
+            }
         </div>
     );
 }

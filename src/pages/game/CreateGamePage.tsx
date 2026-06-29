@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {createGameRequest} from "../../api/games/gamesApi";
+import {createGameRequest} from "../../api/game/gameApi.ts";
 import mainCss from "../../assets/css/Main.module.css";
 import createGameCss from "../../assets/css/game/CreateGame.module.css";
 
