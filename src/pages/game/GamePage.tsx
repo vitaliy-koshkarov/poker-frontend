@@ -16,12 +16,22 @@ import {
 } from "../../auth/paths.ts";
 import {getCurrentPlayerId} from "../../api/authApi.ts";
 import {PlayerActionBtn} from "../../components/game/buttons/PlayerActionBtn.tsx";
+import {Player} from "../../model/Player.ts";
 
 export default function GamePage() {
     const stompClientRef = useRef<Client | null>(null);
     const {id} = useParams();
     const [gameState, setGameState] = useState<GameState | null>(null);
     const [currentPlayerId, setCurrentPlayerId] = useState<number>(0);
+
+    function hasPlayerAlreadyJoined(players: Player[]) {
+        for (let player of players) {
+            if (player.id == currentPlayerId) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     useEffect(() => {
         /* TODO: implement WebSocket connection on App level. For example:
@@ -113,14 +123,15 @@ export default function GamePage() {
                                                                 stompClient={stompClientRef}
                                                                 playerId={currentPlayerId}
                                                                 path={`${playerActionPath}/${gameState.gameDTO.id}/action`}
-                                                                disabled={ (gameState.gameDTO.currentPlayers >= gameState.gameDTO.maxPlayers) }
+                                                                disabled={hasPlayerAlreadyJoined(gameState.playerDTOList) || (gameState.gameDTO.currentPlayers >= gameState.gameDTO.maxPlayers)}
                                                                 actionName={"JOIN"}></PlayerActionBtn>
             }
 
             {gameState?.gameDTO.status == 0
                 && (gameState.gameDTO.creatorPlayerId === currentPlayerId)
                 && <StartGameBtn gameId={gameState.gameDTO.id}
-                                 playerId={currentPlayerId}/>
+                                 playerId={currentPlayerId}
+                                 isDisabled={ !hasPlayerAlreadyJoined(gameState.playerDTOList) }/>
             }
 
             {gameState && <GameTable game={gameState.gameDTO}/>}

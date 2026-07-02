@@ -1,18 +1,19 @@
 import gameCss from "../../../assets/css/game/GamePage.module.css";
 import {startGame} from "../../../api/game/gameApi.ts";
 import {StartGameRequest} from "./StartGameRequest.ts";
+import type {StartGameBtnProps} from "./StartGameBtnProps.ts";
 
-export function StartGameBtn(req: StartGameRequest) {
+export function StartGameBtn({gameId, playerId, isDisabled}: StartGameBtnProps) {
 
     function handleClick() {
-        console.log("Start new game id " + req.gameId + " by player id " + req.playerId);
+        console.log("Start new game id " + gameId + " by player id " + playerId + " disabled " + isDisabled);
 
-        startGame(req);
+        startGame(new StartGameRequest(gameId, playerId));
     }
 
     return (
         <div className={gameCss.gameInfo}>
-            <button type="button" onClick={handleClick}>Start game</button>
+            <button type="button" disabled={isDisabled} onClick={handleClick}>Start game</button>
         </div>
     );
 }
