@@ -7,7 +7,7 @@ export class Game {
     currentPlayers: number;
     maxPlayers: number;
     buyIn: number;
-    status: number;
+    status: string;
     dealerId: number;
     activePlayerId: number;
     smallBlind: number;
@@ -16,7 +16,7 @@ export class Game {
     players: Player[];
 
     constructor(id: number, name: string, creatorPlayerId: number, currentPlayers: number, maxPlayers: number,
-                buyIn: number, status: number, dealerId: number, activePlayerId: number,
+                buyIn: number, status: string, dealerId: number, activePlayerId: number,
                 smallBlind: number, bigBlind: number, minRaise: number, players: Player[]) {
         this.id = id;
         this.name = name;

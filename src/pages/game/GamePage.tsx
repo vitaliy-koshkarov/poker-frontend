@@ -17,6 +17,7 @@ import {getCurrentPlayerId} from "../../api/authApi.ts";
 import {PlayerActionBtn} from "../../components/game/buttons/PlayerActionBtn.tsx";
 import {Player} from "../../model/Player.ts";
 import type {Game} from "../../model/Game.ts";
+import {GameStatus} from "../../model/GameStatus.ts";
 
 export default function GamePage() {
     const stompClientRef = useRef<Client | null>(null);
@@ -119,7 +120,7 @@ export default function GamePage() {
                 <Link to="/lobby">Back to lobby</Link>
             </div>
 
-            {game?.status == 0 && <PlayerActionBtn btnName={"Join the table"}
+            {game?.status == GameStatus.waiting_for_players && <PlayerActionBtn btnName={"Join the table"}
                                                                 stompClient={stompClientRef}
                                                                 playerId={currentPlayerId}
                                                                 path={`${playerActionPath}/${game.id}/action`}
@@ -127,7 +128,7 @@ export default function GamePage() {
                                                                 actionName={"JOIN"}></PlayerActionBtn>
             }
 
-            {game?.status == 0
+            {game?.status == GameStatus.waiting_for_players
                 && (game.creatorPlayerId === currentPlayerId)
                 && <StartGameBtn gameId={game.id}
                                  playerId={currentPlayerId}
