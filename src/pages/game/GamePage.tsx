@@ -6,7 +6,6 @@ import mainCss from "../../assets/css/Main.module.css";
 import gameCss from "../../assets/css/game/GamePage.module.css";
 import {PlayersTable} from "../../components/game/PlayersTable.tsx";
 import {GameTable} from "../../components/game/GameTable.tsx";
-import type {GameState} from "../../model/GameState.ts";
 import {StartGameBtn} from "../../components/game/buttons/StartGameBtn.tsx";
 import {
     brokerURL,
@@ -17,11 +16,12 @@ import {
 import {getCurrentPlayerId} from "../../api/authApi.ts";
 import {PlayerActionBtn} from "../../components/game/buttons/PlayerActionBtn.tsx";
 import {Player} from "../../model/Player.ts";
+import type {Game} from "../../model/Game.ts";
 
 export default function GamePage() {
     const stompClientRef = useRef<Client | null>(null);
     const {id} = useParams();
-    const [gameState, setGameState] = useState<GameState | null>(null);
+    const [game, setGame] = useState<Game | null>(null);
     const [currentPlayerId, setCurrentPlayerId] = useState<number>(0);
 
     function hasPlayerAlreadyJoined(players: Player[]) {
@@ -64,8 +64,8 @@ export default function GamePage() {
                         // receive init data after subscription
                         console.log("Subscribe message: " + subscribeMessageCallback);
                         console.log("Subscribe message body: " + subscribeMessageCallback.body);
-                        const initGameStateData: GameState = JSON.parse(subscribeMessageCallback.body);
-                        setGameState(initGameStateData);
+                        const initGameData: Game = JSON.parse(subscribeMessageCallback.body);
+                        setGame(initGameData);
                     }
                 );
 
@@ -75,8 +75,8 @@ export default function GamePage() {
                         // receive game table data after Send (some action from player)
                         console.log("Received message: " + messageCallback);
                         console.log("Message body: " + messageCallback.body);
-                        const gameStateData: GameState = JSON.parse(messageCallback.body).payload;
-                        setGameState(gameStateData);
+                        const gameData: Game = JSON.parse(messageCallback.body).payload;
+                        setGame(gameData);
                     }
                 );
             },
@@ -119,26 +119,26 @@ export default function GamePage() {
                 <Link to="/lobby">Back to lobby</Link>
             </div>
 
-            {gameState?.gameDTO.status == 0 && <PlayerActionBtn btnName={"Join the table"}
+            {game?.status == 0 && <PlayerActionBtn btnName={"Join the table"}
                                                                 stompClient={stompClientRef}
                                                                 playerId={currentPlayerId}
-                                                                path={`${playerActionPath}/${gameState.gameDTO.id}/action`}
-                                                                disabled={hasPlayerAlreadyJoined(gameState.playerDTOList) || (gameState.gameDTO.currentPlayers >= gameState.gameDTO.maxPlayers)}
+                                                                path={`${playerActionPath}/${game.id}/action`}
+                                                                disabled={hasPlayerAlreadyJoined(game.players) || (game.players.length >= game.maxPlayers)}
                                                                 actionName={"JOIN"}></PlayerActionBtn>
             }
 
-            {gameState?.gameDTO.status == 0
-                && (gameState.gameDTO.creatorPlayerId === currentPlayerId)
-                && <StartGameBtn gameId={gameState.gameDTO.id}
+            {game?.status == 0
+                && (game.creatorPlayerId === currentPlayerId)
+                && <StartGameBtn gameId={game.id}
                                  playerId={currentPlayerId}
-                                 isDisabled={ !hasPlayerAlreadyJoined(gameState.playerDTOList) }/>
+                                 isDisabled={ !hasPlayerAlreadyJoined(game.players) }/>
             }
 
-            {gameState && <GameTable game={gameState.gameDTO}/>}
+            {game && <GameTable game={game}/>}
 
-            {gameState &&
+            {game &&
                 <PlayersTable stompClient={stompClientRef}
-                              gameState={gameState}
+                              game={game}
                               currentPlayerId={currentPlayerId}/>
             }
         </div>
