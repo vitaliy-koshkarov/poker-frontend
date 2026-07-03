@@ -3,7 +3,7 @@ import type {PlayerTableProps} from "./PlayerTableProps.ts";
 import {PlayerActionBtn} from "./buttons/PlayerActionBtn.tsx";
 import {playerActionPath} from "../../auth/paths.ts";
 
-export function PlayersTable({stompClient, gameState, currentPlayerId}: PlayerTableProps) {
+export function PlayersTable({stompClient, game, currentPlayerId}: PlayerTableProps) {
     return (
         <div>
             <div className={gameCss.playersTitle}>Players</div>
@@ -20,7 +20,7 @@ export function PlayersTable({stompClient, gameState, currentPlayerId}: PlayerTa
                 </thead>
 
                 <tbody>
-                {gameState?.playerDTOList?.map(player => (
+                {game?.players?.map(player => (
                     <tr key={player.id}>
                         <td className={gameCss.td}>{player.id}</td>
                         <td className={gameCss.td}>{player.nickname}</td>
@@ -31,20 +31,20 @@ export function PlayersTable({stompClient, gameState, currentPlayerId}: PlayerTa
                             <PlayerActionBtn btnName={"Fold"}
                                              stompClient={stompClient}
                                              playerId={player.id}
-                                             path={`${playerActionPath}/${gameState.gameDTO.id}/action`}
-                                             disabled={ !(player.id == currentPlayerId && player.id == gameState.gameDTO.activePlayerId) }
+                                             path={`${playerActionPath}/${game.id}/action`}
+                                             disabled={ !(player.id == currentPlayerId && player.id == game.activePlayerId) }
                                              actionName={"FOLD"}/>
                             <PlayerActionBtn btnName={"Check"}
                                              stompClient={stompClient}
                                              playerId={player.id}
-                                             path={`${playerActionPath}/${gameState.gameDTO.id}/action`}
-                                             disabled={ !(player.id == currentPlayerId && player.id == gameState.gameDTO.activePlayerId) }
+                                             path={`${playerActionPath}/${game.id}/action`}
+                                             disabled={ !(player.id == currentPlayerId && player.id == game.activePlayerId) }
                                              actionName={"CHECK"}/>
                             <PlayerActionBtn btnName={"Bet"}
                                              stompClient={stompClient}
                                              playerId={player.id}
-                                             path={`${playerActionPath}/${gameState.gameDTO.id}/action`}
-                                             disabled={ !(player.id == currentPlayerId && player.id == gameState.gameDTO.activePlayerId) }
+                                             path={`${playerActionPath}/${game.id}/action`}
+                                             disabled={ !(player.id == currentPlayerId && player.id == game.activePlayerId) }
                                              actionName={"BET"}/>
                         </td>
                     </tr>
