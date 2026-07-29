@@ -5,22 +5,24 @@ import {getCurrentPlayerId, logout} from "../../api/authApi.ts";
 import mainCss from "../../assets/css/Main.module.css";
 import lobbyCss from "../../assets/css/lobby/Lobby.module.css";
 import type {Game} from "../../model/Game.ts";
+import {handleErrorMessage} from "../../api/handleErrorMessage.ts";
 
 export default function LobbyPage() {
-    const [games, setGames] = useState<Game[]>([]);
-    const [error, setError] = useState<string | null>(null);
+    const {errorMessage, showErrorMessage} = handleErrorMessage();
     const [currentPlayerId, setCurrentPlayerId] = useState<number>(0);
+    const [games, setGames] = useState<Game[]>([]);
 
     useEffect(() => {
         getCurrentPlayerId()
             .then(data => {
                 console.log("Current player id " + data);
-                setCurrentPlayerId(data)
-            });
+                setCurrentPlayerId(Number(data))
+            })
+            .catch(error => showErrorMessage(error));
 
         fetchGames()
             .then(setGames)
-            .catch(err => setError(err.message));
+            .catch(error => showErrorMessage(error));
     }, []);
 
     const navigateTo = useNavigate();
@@ -45,7 +47,7 @@ export default function LobbyPage() {
 
             <div>
                 <div className={mainCss.title}>Lobby</div>
-                {error && <p className={mainCss.errorMessage}>{error}</p>}
+                {errorMessage && <p className={mainCss.errorMessage}>{errorMessage}</p>}
 
                 <div className={lobbyCss.createGameBtn}>
                     <button type="button" onClick={redirectToCreateGamePage}>Create game</button>

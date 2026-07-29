@@ -12,7 +12,7 @@ export async function register(email: string, nickname: string, password: string
     });
 
     if (!registerResponse.ok) {
-        throw new Error("Registration failed");
+        throw new Error(await registerResponse.text());
     }
 
     const registerData = await registerResponse.json();
@@ -28,7 +28,7 @@ export async function login(email: string, password: string): Promise<string> {
     });
 
     if (!loginResponse.ok) {
-        throw new Error("Login failed");
+        throw new Error(await loginResponse.text());
     }
 
     const loginData = await loginResponse.json();
@@ -56,10 +56,8 @@ export async function getCurrentPlayerId() {
     });
 
     if (!meResponse.ok) {
-        throw new Error("Logout error");
+        throw new Error(await meResponse.text());
     }
 
-    const data = await meResponse.json();
-
-    return data.currentPlayerId;
+    return meResponse.text();
 }
