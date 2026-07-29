@@ -32,6 +32,8 @@ export async function updatePassword(currentPassword: string, newPassword: strin
     });
 
     if (!updatePasswordResponse.ok) {
-        throw new Error("Error update password");
+        throw new Error(await updatePasswordResponse.text());
     }
+
+    return updatePasswordResponse.text();
 }

@@ -7,13 +7,15 @@ import profileCss from "../../assets/css/profile/Profile.module.css";
 import {handleErrorMessage} from "../../api/handleErrorMessage.ts";
 
 export default function ProfilePage() {
+    const {errorMessage, showErrorMessage, clearErrorMessage} = handleErrorMessage();
+
     const [email, setEmail] = useState("");
     const [nickname, setNickname] = useState("");
+    const [profileInfoMessage, setProfileInfoMessage] = useState("");
+
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
-    const [profileInfoMessage, setProfileInfoMessage] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
-    const {errorMessage, showErrorMessage, clearErrorMessage} = handleErrorMessage();
 
     useEffect(() => {
         getProfileInfo()
@@ -25,9 +27,9 @@ export default function ProfilePage() {
     }, []);
 
     async function updProfileInfo(e: React.FormEvent) {
-        setProfileInfoMessage("");
         e.preventDefault();
         clearErrorMessage();
+        setProfileInfoMessage("");
 
         try {
             const responseMessage = await updateProfileInfo(nickname);
@@ -39,12 +41,18 @@ export default function ProfilePage() {
 
     async function updPass(e: React.FormEvent) {
         e.preventDefault();
+        clearErrorMessage();
+        setPasswordMessage("");
 
-        await updatePassword(currentPassword, newPassword);
+        try {
+            const responseMessage = await updatePassword(currentPassword, newPassword);
+            setPasswordMessage(responseMessage);
+        } catch (error) {
+            showErrorMessage(error);
+        }
 
         setCurrentPassword("");
         setNewPassword("");
-        setPasswordMessage("Password updated successfully");
     }
 
     return (
