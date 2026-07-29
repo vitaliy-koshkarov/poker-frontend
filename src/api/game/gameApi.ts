@@ -7,7 +7,7 @@ export async function fetchGames() {
     const gamesResponse = await authFetch(`${BASE_URL}`);
 
     if (!gamesResponse.ok) {
-        throw new Error("Failed to fetch games");
+        throw new Error(await gamesResponse.text());
     }
 
     return gamesResponse.json();
