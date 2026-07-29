@@ -12,7 +12,7 @@ export async function register(email: string, nickname: string, password: string
     });
 
     if (!registerResponse.ok) {
-        throw new Error("Registration failed");
+        throw new Error(await registerResponse.text());
     }
 
     const registerData = await registerResponse.json();

@@ -20,8 +20,12 @@ export default function RegistrationPage() {
             const token = await register(email, nickname, password);
             saveToken(token);
             navigateTo("/profile");
-        } catch {
-            setError("Registration failed");
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Unexpected error")
+            }
         }
     }
 
