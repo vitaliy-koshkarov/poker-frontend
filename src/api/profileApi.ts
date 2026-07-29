@@ -6,7 +6,7 @@ export async function getProfileInfo() {
     const getProfileInfoResponse = await authFetch(`${URL}/getProfileInfo`);
 
     if (!getProfileInfoResponse.ok) {
-        throw new Error("Error get profile info");
+        throw new Error(await getProfileInfoResponse.text());
     }
 
     return getProfileInfoResponse.json();
@@ -19,8 +19,10 @@ export async function updateProfileInfo(nickname: string) {
     });
 
     if (!updateProfileInfoResponse.ok) {
-        throw new Error("Error update profile info");
+        throw new Error(await updateProfileInfoResponse.text());
     }
+
+    return updateProfileInfoResponse.text();
 }
 
 export async function updatePassword(currentPassword: string, newPassword: string) {

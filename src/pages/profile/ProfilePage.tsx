@@ -4,6 +4,7 @@ import {getProfileInfo, updateProfileInfo, updatePassword} from "../../api/profi
 import {logout} from "../../api/authApi.ts";
 import mainCss from "../../assets/css/Main.module.css";
 import profileCss from "../../assets/css/profile/Profile.module.css";
+import {handleErrorMessage} from "../../api/handleErrorMessage.ts";
 
 export default function ProfilePage() {
     const [email, setEmail] = useState("");
@@ -12,7 +13,7 @@ export default function ProfilePage() {
     const [newPassword, setNewPassword] = useState("");
     const [profileInfoMessage, setProfileInfoMessage] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
-    const [error, setError] = useState("");
+    const {errorMessage, showErrorMessage, clearErrorMessage} = handleErrorMessage();
 
     useEffect(() => {
         getProfileInfo()
@@ -20,13 +21,20 @@ export default function ProfilePage() {
             setEmail(data.email);
             setNickname(data.nickname);
         })
-        .catch(error => setError(error.message));
+        .catch(error => showErrorMessage(error));
     }, []);
 
     async function updProfileInfo(e: React.FormEvent) {
+        setProfileInfoMessage("");
         e.preventDefault();
-        await updateProfileInfo(nickname);
-        setProfileInfoMessage("Profile updated");
+        clearErrorMessage();
+
+        try {
+            const responseMessage = await updateProfileInfo(nickname);
+            setProfileInfoMessage(responseMessage);
+        } catch (error) {
+            showErrorMessage(error);
+        }
     }
 
     async function updPass(e: React.FormEvent) {
@@ -42,7 +50,7 @@ export default function ProfilePage() {
     return (
         <div className={mainCss.page}>
             <div className={mainCss.title}>Profile Page</div>
-            {error && <p className={mainCss.errorMessage}>{error}</p>}
+            {errorMessage && <p className={mainCss.errorMessage}>{errorMessage}</p>}
 
             <div className={profileCss.link}>
                 <Link to="/lobby">To lobby</Link>
