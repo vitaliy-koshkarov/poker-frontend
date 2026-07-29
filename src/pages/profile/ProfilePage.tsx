@@ -4,15 +4,18 @@ import {getProfileInfo, updateProfileInfo, updatePassword} from "../../api/profi
 import {logout} from "../../api/authApi.ts";
 import mainCss from "../../assets/css/Main.module.css";
 import profileCss from "../../assets/css/profile/Profile.module.css";
+import {handleErrorMessage} from "../../api/handleErrorMessage.ts";
 
 export default function ProfilePage() {
+    const {errorMessage, showErrorMessage, clearErrorMessage} = handleErrorMessage();
+
     const [email, setEmail] = useState("");
     const [nickname, setNickname] = useState("");
+    const [profileInfoMessage, setProfileInfoMessage] = useState("");
+
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
-    const [profileInfoMessage, setProfileInfoMessage] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
-    const [error, setError] = useState("");
 
     useEffect(() => {
         getProfileInfo()
@@ -20,29 +23,42 @@ export default function ProfilePage() {
             setEmail(data.email);
             setNickname(data.nickname);
         })
-        .catch(error => setError(error.message));
+        .catch(error => showErrorMessage(error));
     }, []);
 
     async function updProfileInfo(e: React.FormEvent) {
         e.preventDefault();
-        await updateProfileInfo(nickname);
-        setProfileInfoMessage("Profile updated");
+        clearErrorMessage();
+        setProfileInfoMessage("");
+
+        try {
+            const responseMessage = await updateProfileInfo(nickname);
+            setProfileInfoMessage(responseMessage);
+        } catch (error) {
+            showErrorMessage(error);
+        }
     }
 
     async function updPass(e: React.FormEvent) {
         e.preventDefault();
+        clearErrorMessage();
+        setPasswordMessage("");
 
-        await updatePassword(currentPassword, newPassword);
+        try {
+            const responseMessage = await updatePassword(currentPassword, newPassword);
+            setPasswordMessage(responseMessage);
+        } catch (error) {
+            showErrorMessage(error);
+        }
 
         setCurrentPassword("");
         setNewPassword("");
-        setPasswordMessage("Password updated successfully");
     }
 
     return (
         <div className={mainCss.page}>
             <div className={mainCss.title}>Profile Page</div>
-            {error && <p className={mainCss.errorMessage}>{error}</p>}
+            {errorMessage && <p className={mainCss.errorMessage}>{errorMessage}</p>}
 
             <div className={profileCss.link}>
                 <Link to="/lobby">To lobby</Link>

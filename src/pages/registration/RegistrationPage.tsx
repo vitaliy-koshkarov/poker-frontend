@@ -4,24 +4,26 @@ import {register} from "../../api/authApi";
 import {saveToken} from "../../auth/token";
 import mainCss from "../../assets/css/Main.module.css";
 import registrationCss from "../../assets/css/registration/Registration.module.css"
+import {handleErrorMessage} from "../../api/handleErrorMessage.ts";
 
 export default function RegistrationPage() {
     const [email, setEmail] = useState("");
     const [nickname, setNickname] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+    const {errorMessage, showErrorMessage, clearErrorMessage} = handleErrorMessage();
 
     const navigateTo = useNavigate();
 
     async function handleRegister(e: React.FormEvent) {
         e.preventDefault();
+        clearErrorMessage();
 
         try {
             const token = await register(email, nickname, password);
             saveToken(token);
             navigateTo("/profile");
-        } catch {
-            setError("Registration failed");
+        } catch (error) {
+            showErrorMessage(error);
         }
     }
 
@@ -29,7 +31,7 @@ export default function RegistrationPage() {
         <div className={mainCss.page}>
             <form onSubmit={handleRegister}>
                 <div className={mainCss.title}>Registration</div>
-                {error && <p className={mainCss.errorMessage}>{error}</p>}
+                {errorMessage && <p className={mainCss.errorMessage}>{errorMessage}</p>}
 
                 <div className={registrationCss.inputEmail}>
                     <input placeholder="Email" value={email}

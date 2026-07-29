@@ -4,24 +4,26 @@ import {saveToken} from "../../auth/token.ts";
 import {login} from "../../api/authApi.ts";
 import mainCss from "../../assets/css/Main.module.css";
 import loginCss from "../../assets/css/login/Login.module.css";
+import {handleErrorMessage} from "../../api/handleErrorMessage.ts";
 
 export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+    const {errorMessage, showErrorMessage, clearErrorMessage} = handleErrorMessage();
 
     const navigateTo = useNavigate();
 
     async function handleLogin(e: React.FormEvent) {
         e.preventDefault();
+        clearErrorMessage();
 
         try {
             const token = await login(email, password);
             saveToken(token);
             console.log("Successful login");
             navigateTo("/profile");
-        } catch (e) {
-            setError("Invalid email or password");
+        } catch (error) {
+            showErrorMessage(error);
         }
     }
 
@@ -29,7 +31,7 @@ export default function LoginPage() {
         <div className={mainCss.page}>
 
             <div className={mainCss.title}>Login</div>
-            {error && <p className={mainCss.errorMessage}>{error}</p>}
+            {errorMessage && <p className={mainCss.errorMessage}>{errorMessage}</p>}
 
             <div className={loginCss.inputEmail}>
                 <input placeholder="Email" value={email}
