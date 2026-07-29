@@ -56,10 +56,8 @@ export async function getCurrentPlayerId() {
     });
 
     if (!meResponse.ok) {
-        throw new Error("Logout error");
+        throw new Error(await meResponse.text());
     }
 
-    const data = await meResponse.json();
-
-    return data.currentPlayerId;
+    return meResponse.text();
 }
