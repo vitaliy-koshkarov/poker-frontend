@@ -30,7 +30,7 @@ export async function deleteGame(id: number) {
     })
 
     if (!deleteGameResponse.ok) {
-        throw new Error("Failed to remove game with id " + id);
+        throw new Error(await deleteGameResponse.text());
     }
     /*TODO: fix replacing URL and page reload. Just remove item or fetch new items*/
     window.location.replace("/lobby");
