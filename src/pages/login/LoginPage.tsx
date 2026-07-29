@@ -20,8 +20,12 @@ export default function LoginPage() {
             saveToken(token);
             console.log("Successful login");
             navigateTo("/profile");
-        } catch (e) {
-            setError("Invalid email or password");
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message);
+            } else {
+                setError("Unexpected error")
+            }
         }
     }
 
