@@ -3,8 +3,10 @@ import {useNavigate} from "react-router-dom";
 import {createGameRequest} from "../../api/game/gameApi.ts";
 import mainCss from "../../assets/css/Main.module.css";
 import createGameCss from "../../assets/css/game/CreateGame.module.css";
+import {handleErrorMessage} from "../../api/handleErrorMessage.ts";
 
 export default function CreateGamePage() {
+    const {errorMessage, showErrorMessage} = handleErrorMessage();
     const [name, setName] = useState("");
     const [maxPlayers, setMaxPlayers] = useState(2);
     const [buyIn, setBuyIn] = useState(100);
@@ -13,7 +15,8 @@ export default function CreateGamePage() {
 
     function createGame(maxPlayers: number, buyIn: number, name: string) {
         createGameRequest(maxPlayers, buyIn, name)
-            .then(returnBack);
+            .then(returnBack)
+            .catch(error => showErrorMessage(error));
     }
 
     function returnBack() {
@@ -25,6 +28,7 @@ export default function CreateGamePage() {
             <div className={mainCss.title}>
                 <label>Choose parameters of the game</label>
             </div>
+            {errorMessage && <p className={mainCss.errorMessage}>{errorMessage}</p>}
 
             <div className={createGameCss.gameNameInput}>
                 <label>Name: </label>

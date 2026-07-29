@@ -20,7 +20,7 @@ export async function createGameRequest(maxPlayers: number, buyIn: number, name:
     });
 
     if (!createGameResponse.ok) {
-        throw new Error("Failed to create game");
+        throw new Error(await createGameResponse.text());
     }
 }
 
