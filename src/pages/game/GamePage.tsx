@@ -48,7 +48,7 @@ export default function GamePage() {
         getCurrentPlayerId()
             .then(data => {
                 console.log("Current player id " + data);
-                setCurrentPlayerId(data)
+                setCurrentPlayerId(Number(data))
             });
 
         const stompClient = new Client({
@@ -121,18 +121,18 @@ export default function GamePage() {
             </div>
 
             {game?.status == GameStatus.waiting_for_players && <PlayerActionBtn btnName={"Join the table"}
-                                                                stompClient={stompClientRef}
-                                                                playerId={currentPlayerId}
-                                                                path={`${playerActionPath}/${game.id}/action`}
-                                                                disabled={hasPlayerAlreadyJoined(game.players) || (game.players.length >= game.maxPlayers)}
-                                                                actionName={"JOIN"}></PlayerActionBtn>
+                                                                                stompClient={stompClientRef}
+                                                                                playerId={currentPlayerId}
+                                                                                path={`${playerActionPath}/${game.id}/action`}
+                                                                                disabled={hasPlayerAlreadyJoined(game.players) || (game.players.length >= game.maxPlayers)}
+                                                                                actionName={"JOIN"}></PlayerActionBtn>
             }
 
             {game?.status == GameStatus.waiting_for_players
                 && (game.creatorPlayerId === currentPlayerId)
                 && <StartGameBtn gameId={game.id}
                                  playerId={currentPlayerId}
-                                 isDisabled={ !hasPlayerAlreadyJoined(game.players) }/>
+                                 isDisabled={!hasPlayerAlreadyJoined(game.players)}/>
             }
 
             {game && <GameTable game={game}/>}

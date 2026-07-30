@@ -43,6 +43,6 @@ export async function startGame(req: StartGameRequest) {
     });
 
     if (!startGameResponse.ok) {
-        throw new Error("Failed to start game " + req.gameId);
+        throw new Error(await startGameResponse.text());
     }
 }
